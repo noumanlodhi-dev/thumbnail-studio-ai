@@ -1,0 +1,2499 @@
+<!DOCTYPE html>
+
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thumbnail Studio AI — Professional YouTube Thumbnail & Prompt Architect</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Plus Jakarta Sans, Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#09090b',
+            charcoal: '#121217',
+            card: '#18181f',
+            cardHover: '#1f1f29',
+            borderDark: '#272732',
+            accentPurple: '#8b5cf6',
+            accentBlue: '#06b6d4',
+            electricBlue: '#3b82f6'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          boxShadow: {
+            glow: '0 0 25px -5px rgba(139, 92, 246, 0.35), 0 0 15px -6px rgba(6, 182, 212, 0.25)',
+            glowSm: '0 0 15px -3px rgba(139, 92, 246, 0.3)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #09090b;
+      color: #f4f4f6;
+      background-image: 
+        radial-gradient(circle at 12% 10%, rgba(139, 92, 246, 0.12), transparent 32%),
+        radial-gradient(circle at 88% 15%, rgba(6, 182, 212, 0.10), transparent 35%),
+        radial-gradient(circle at 50% 90%, rgba(59, 130, 246, 0.07), transparent 40%);
+      background-attachment: fixed;
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #121217;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2e2e3d;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #8b5cf6;
+    }
+
+    /* Blueprint grid background */
+    .blueprint-grid {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    }
+
+    /* Rule of thirds overlay lines */
+    .thirds-grid::before,
+    .thirds-grid::after {
+      content: '';
+      position: absolute;
+      pointer-events: none;
+      z-index: 15;
+    }
+    .thirds-grid::before {
+      top: 33.33%;
+      bottom: 33.33%;
+      left: 0;
+      right: 0;
+      border-top: 1px dashed rgba(139, 92, 246, 0.35);
+      border-bottom: 1px dashed rgba(139, 92, 246, 0.35);
+    }
+    .thirds-grid::after {
+      left: 33.33%;
+      right: 33.33%;
+      top: 0;
+      bottom: 0;
+      border-left: 1px dashed rgba(6, 182, 212, 0.35);
+      border-right: 1px dashed rgba(6, 182, 212, 0.35);
+    }
+
+    /* Subtle pulse highlight for form editing */
+    @keyframes formHighlightPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+      50% { box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.5); }
+    }
+    .highlight-pulse {
+      animation: formHighlightPulse 1.2s ease-in-out 2;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans antialiased selection:bg-accentPurple selection:text-white">
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="sticky top-0 z-40 border-b border-borderDark bg-obsidian/85 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand Logo & Name -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accentPurple via-electricBlue to-accentBlue flex items-center justify-center shadow-glowSm">
+          <i class="fa-solid fa-wand-magic-sparkles text-white text-lg"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h1 class="font-display font-bold text-lg sm:text-xl tracking-tight text-white">
+              Thumbnail Studio <span class="text-transparent bg-clip-text bg-gradient-to-r from-accentPurple to-accentBlue">AI</span>
+            </h1>
+            <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-accentPurple/15 text-purple-300 border border-accentPurple/30">
+              1280×720 CTR Engine
+            </span>
+          </div>
+          <p class="text-xs text-zinc-400 hidden sm:block">YouTube Visual Prompt Architect + Full PHP & MySQL Backend Integration</p>
+        </div>
+      </div>
+
+      <!-- Right Controls: PHP Backend Status, PHP Code Modal Trigger & Quick Samples -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <!-- Live PHP Connection Status Indicator -->
+        <div id="phpStatusBadge" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-card border border-borderDark text-xs" title="Attempts live requests to api.php first; automatically falls back in static preview sandboxes">
+          <span id="phpStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span id="phpStatusText" class="font-mono text-[11px] text-zinc-300">PHP: Auto (`api.php` + Fallback)</span>
+        </div>
+
+        <!-- Open PHP Backend Code & Setup Modal Button -->
+        <button
+          type="button"
+          id="openPhpModalBtn"
+          class="text-xs px-3 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600/30 to-accentPurple/30 hover:from-indigo-600/50 hover:to-accentPurple/50 border border-accentPurple/60 text-white font-semibold transition-all flex items-center gap-1.5 shadow-glowSm cursor-pointer"
+        >
+          <i class="fa-brands fa-php text-base text-accentBlue"></i>
+          <span>PHP Backend Files (`api.php` + SQL)</span>
+        </button>
+
+        <!-- Quick Sample Presets -->
+        <div class="hidden xl:flex items-center gap-1.5 pl-2 border-l border-borderDark">
+          <button type="button" data-sample="ai" class="sample-btn text-xs px-2.5 py-1.5 rounded-lg bg-card hover:bg-cardHover border border-borderDark hover:border-accentPurple/50 text-zinc-200 transition-all whitespace-nowrap flex items-center gap-1">
+            <i class="fa-solid fa-microchip text-accentPurple"></i> AI
+          </button>
+          <button type="button" data-sample="gaming" class="sample-btn text-xs px-2.5 py-1.5 rounded-lg bg-card hover:bg-cardHover border border-borderDark hover:border-accentBlue/50 text-zinc-200 transition-all whitespace-nowrap flex items-center gap-1">
+            <i class="fa-solid fa-gamepad text-accentBlue"></i> Gaming
+          </button>
+          <button type="button" data-sample="business" class="sample-btn text-xs px-2.5 py-1.5 rounded-lg bg-card hover:bg-cardHover border border-borderDark hover:border-emerald-500/50 text-zinc-200 transition-all whitespace-nowrap flex items-center gap-1">
+            <i class="fa-solid fa-chart-line text-emerald-400"></i> Business
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sub-bar for PHP Endpoint Configuration & Mobile Quick Samples -->
+    <div class="border-t border-borderDark/70 bg-charcoal/75">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div class="flex items-center gap-2 flex-wrap">
+          <label for="phpEndpointInput" class="text-[11px] font-mono text-zinc-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-server text-accentPurple"></i> PHP Endpoint:
+          </label>
+          <input
+            type="text"
+            id="phpEndpointInput"
+            value="api.php"
+            class="w-36 sm:w-44 px-2.5 py-1 rounded-lg bg-obsidian border border-borderDark text-[11px] font-mono text-accentBlue focus:border-accentPurple outline-none"
+            title="Relative or full URL to your api.php script (e.g. api.php or http://localhost/thumbnail-studio/api.php)"
+          />
+          <button
+            type="button"
+            id="pingPhpBtn"
+            class="px-2.5 py-1 rounded-lg bg-card hover:bg-cardHover border border-borderDark text-[11px] text-zinc-300 hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
+          >
+            <i class="fa-solid fa-plug-circle-check text-emerald-400"></i> Test `api.php`
+          </button>
+          <span id="phpDetailedNotice" class="text-[11px] text-zinc-400 hidden md:inline">
+            Checking PHP server...
+          </span>
+        </div>
+
+        <!-- Quick Samples visible on smaller screens -->
+        <div class="flex xl:hidden items-center gap-1.5">
+          <span class="text-[11px] text-zinc-400 mr-1">Samples:</span>
+          <button type="button" data-sample="ai" class="sample-btn text-[11px] px-2 py-1 rounded bg-card border border-borderDark text-zinc-200">AI</button>
+          <button type="button" data-sample="gaming" class="sample-btn text-[11px] px-2 py-1 rounded bg-card border border-borderDark text-zinc-200">Gaming</button>
+          <button type="button" data-sample="business" class="sample-btn text-[11px] px-2 py-1 rounded bg-card border border-borderDark text-zinc-200">Business</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    
+    <!-- Global Validation / Notification Banner (Hidden by default) -->
+    <div id="validationBanner" role="alert" aria-live="assertive" class="hidden mb-6 p-4 rounded-xl bg-red-950/70 border border-red-500/50 text-red-200 flex items-start justify-between gap-3 shadow-lg">
+      <div class="flex items-start gap-3">
+        <i class="fa-solid fa-triangle-exclamation text-red-400 mt-0.5 text-lg"></i>
+        <div>
+          <h2 class="text-sm font-semibold text-white" id="validationTitle">Missing Required Information</h2>
+          <p class="text-xs text-red-200/90 mt-0.5" id="validationMessage">Please enter a Video Title before generating a thumbnail prompt.</p>
+        </div>
+      </div>
+      <button type="button" id="closeValidationBtn" class="text-red-300 hover:text-white px-2 py-1 rounded-lg" aria-label="Close error message">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+      
+      <!-- LEFT COLUMN: DESIGN INPUT FORM (5 COLUMNS ON DESKTOP) -->
+      <section id="inputFormSection" aria-labelledby="formHeading" class="lg:col-span-5 bg-charcoal border border-borderDark rounded-2xl p-5 sm:p-6 shadow-xl transition-all duration-300">
+        <div class="flex items-center justify-between pb-4 mb-5 border-b border-borderDark">
+          <div class="flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-lg bg-accentPurple/15 border border-accentPurple/40 text-accentPurple flex items-center justify-center text-xs font-bold">1</span>
+            <h2 id="formHeading" class="font-display font-bold text-base sm:text-lg text-white">Thumbnail Specifications</h2>
+          </div>
+          <button type="button" id="clearFormBtn" class="text-xs text-zinc-400 hover:text-red-400 transition-colors flex items-center gap-1.5 px-2.5 py-1 rounded-lg hover:bg-red-500/10" title="Reset all form fields and outputs">
+            <i class="fa-solid fa-rotate-left"></i> Clear Form
+          </button>
+        </div>
+
+        <form id="thumbnailForm" novalidate class="space-y-4">
+          
+          <!-- 1. Video Title (Required) -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="videoTitle" class="block text-xs font-semibold uppercase tracking-wider text-zinc-300">
+                Video Title <span class="text-red-400 font-bold">*</span>
+              </label>
+              <span id="titleErrorBadge" class="hidden text-[11px] font-medium text-red-400">
+                <i class="fa-solid fa-circle-exclamation mr-1"></i>Required field
+              </span>
+            </div>
+            <input
+              type="text"
+              id="videoTitle"
+              name="videoTitle"
+              required
+              placeholder="e.g., I Built an AI Agent That Codes Entire Apps in 10 Minutes"
+              class="w-full rounded-xl bg-card border border-borderDark focus:border-accentPurple focus:ring-2 focus:ring-accentPurple/25 px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 outline-none transition-all"
+            />
+          </div>
+
+          <!-- 2. Video Description (Optional) -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="videoDescription" class="block text-xs font-semibold uppercase tracking-wider text-zinc-300">
+                Video Description / Context <span class="text-zinc-500 font-normal capitalize">(optional)</span>
+              </label>
+            </div>
+            <textarea
+              id="videoDescription"
+              name="videoDescription"
+              rows="2"
+              placeholder="Briefly describe the hook, story climax, or key takeaway of your video..."
+              class="w-full rounded-xl bg-card border border-borderDark focus:border-accentPurple focus:ring-2 focus:ring-accentPurple/25 px-3.5 py-2 text-sm text-white placeholder-zinc-500 outline-none transition-all resize-y"
+            ></textarea>
+          </div>
+
+          <!-- 3. Category Dropdown & Facial Expression Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label for="categorySelect" class="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
+                Video Category
+              </label>
+              <div class="relative">
+                <select
+                  id="categorySelect"
+                  name="categorySelect"
+                  class="w-full appearance-none rounded-xl bg-card border border-borderDark focus:border-accentPurple focus:ring-2 focus:ring-accentPurple/25 px-3.5 py-2.5 pr-9 text-sm text-white outline-none transition-all cursor-pointer"
+                >
+                  <option value="Programming">Programming</option>
+                  <option value="AI" selected>AI</option>
+                  <option value="Gaming">Gaming</option>
+                  <option value="Education">Education</option>
+                  <option value="Vlogging">Vlogging</option>
+                  <option value="Business">Business</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Tutorials">Tutorials</option>
+                  <option value="Other">Other</option>
+                </select>
+                <i class="fa-solid fa-chevron-down text-xs text-zinc-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+              </div>
+            </div>
+
+            <!-- Facial Expression / Emotion Helper -->
+            <div>
+              <label for="expressionSelect" class="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
+                Subject Expression
+              </label>
+              <div class="relative">
+                <select
+                  id="expressionSelect"
+                  name="expressionSelect"
+                  class="w-full appearance-none rounded-xl bg-card border border-borderDark focus:border-accentPurple focus:ring-2 focus:ring-accentPurple/25 px-3.5 py-2.5 pr-9 text-sm text-white outline-none transition-all cursor-pointer"
+                >
+                  <option value="Shocked & Mind-Blown" selected>😱 Shocked / Surprised</option>
+                  <option value="Intense & Hyper-Focused">😤 Focused / Intense</option>
+                  <option value="Excited & Triumphant">🤩 Excited / Happy</option>
+                  <option value="Skeptical & Intrigued">🤨 Confused / Skeptical</option>
+                  <option value="None (Object or Environment Focus)">🤖 No Face / Object Focus</option>
+                </select>
+                <i class="fa-solid fa-chevron-down text-xs text-zinc-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Thumbnail Style Selector (Interactive Visual Pills) -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+              Thumbnail Visual Style
+            </label>
+            <input type="hidden" id="thumbnailStyle" value="Cinematic" />
+            <div id="stylePillsContainer" role="radiogroup" aria-label="Thumbnail Visual Style" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <button type="button" data-style="Cinematic" role="radio" aria-checked="true" class="style-pill active-pill px-3 py-2 rounded-xl border text-xs font-semibold flex items-center gap-2 transition-all bg-accentPurple/20 border-accentPurple text-white shadow-glowSm">
+                <i class="fa-solid fa-film text-accentPurple"></i> Cinematic
+              </button>
+              <button type="button" data-style="Minimalist" role="radio" aria-checked="false" class="style-pill px-3 py-2 rounded-xl border border-borderDark bg-card hover:bg-cardHover text-zinc-300 text-xs font-semibold flex items-center gap-2 transition-all">
+                <i class="fa-solid fa-cube text-zinc-400"></i> Minimalist
+              </button>
+              <button type="button" data-style="Photorealistic" role="radio" aria-checked="false" class="style-pill px-3 py-2 rounded-xl border border-borderDark bg-card hover:bg-cardHover text-zinc-300 text-xs font-semibold flex items-center gap-2 transition-all">
+                <i class="fa-solid fa-camera text-zinc-400"></i> Photorealistic
+              </button>
+              <button type="button" data-style="Gaming" role="radio" aria-checked="false" class="style-pill px-3 py-2 rounded-xl border border-borderDark bg-card hover:bg-cardHover text-zinc-300 text-xs font-semibold flex items-center gap-2 transition-all">
+                <i class="fa-solid fa-bolt-lightning text-zinc-400"></i> Gaming
+              </button>
+              <button type="button" data-style="Futuristic" role="radio" aria-checked="false" class="style-pill px-3 py-2 rounded-xl border border-borderDark bg-card hover:bg-cardHover text-zinc-300 text-xs font-semibold flex items-center gap-2 transition-all">
+                <i class="fa-solid fa-atom text-zinc-400"></i> Futuristic
+              </button>
+              <button type="button" data-style="Educational" role="radio" aria-checked="false" class="style-pill px-3 py-2 rounded-xl border border-borderDark bg-card hover:bg-cardHover text-zinc-300 text-xs font-semibold flex items-center gap-2 transition-all">
+                <i class="fa-solid fa-chalkboard-user text-zinc-400"></i> Educational
+              </button>
+            </div>
+          </div>
+
+          <!-- 5. Thumbnail Text Overlay (Optional with Live Word/Char Badge) -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="thumbnailText" class="block text-xs font-semibold uppercase tracking-wider text-zinc-300">
+                Thumbnail Text Overlay <span class="text-zinc-500 font-normal capitalize">(optional)</span>
+              </label>
+              <span id="textLengthBadge" class="text-[11px] px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-400 font-mono">
+                0 words (Best: 1–4 words)
+              </span>
+            </div>
+            <input
+              type="text"
+              id="thumbnailText"
+              name="thumbnailText"
+              maxlength="42"
+              placeholder="e.g., RIP CODERS? or 10X FASTER!"
+              class="w-full rounded-xl bg-card border border-borderDark focus:border-accentBlue focus:ring-2 focus:ring-accentBlue/25 px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 outline-none transition-all font-semibold tracking-wide"
+            />
+          </div>
+
+          <!-- 6. Primary Accent Color Selector -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label for="primaryColorPicker" class="block text-xs font-semibold uppercase tracking-wider text-zinc-300">
+                Primary Lighting & Accent Color
+              </label>
+              <span id="colorNameLabel" class="text-xs font-mono text-accentPurple">#8B5CF6 (Electric Violet)</span>
+            </div>
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <!-- Preset Color Swatches -->
+              <button type="button" data-color="#8B5CF6" data-label="Electric Violet" aria-label="Select Electric Violet" class="color-swatch w-7 h-7 rounded-lg bg-[#8B5CF6] ring-2 ring-white scale-110 transition-transform"></button>
+              <button type="button" data-color="#06B6D4" data-label="Cyber Cyan" aria-label="Select Cyber Cyan" class="color-swatch w-7 h-7 rounded-lg bg-[#06B6D4] opacity-80 hover:opacity-100 transition-all"></button>
+              <button type="button" data-color="#EF4444" data-label="Crimson Alert" aria-label="Select Crimson Alert" class="color-swatch w-7 h-7 rounded-lg bg-[#EF4444] opacity-80 hover:opacity-100 transition-all"></button>
+              <button type="button" data-color="#10B981" data-label="Matrix Emerald" aria-label="Select Matrix Emerald" class="color-swatch w-7 h-7 rounded-lg bg-[#10B981] opacity-80 hover:opacity-100 transition-all"></button>
+              <button type="button" data-color="#F59E0B" data-label="Solar Gold" aria-label="Select Solar Gold" class="color-swatch w-7 h-7 rounded-lg bg-[#F59E0B] opacity-80 hover:opacity-100 transition-all"></button>
+              <button type="button" data-color="#EC4899" data-label="Neon Magenta" aria-label="Select Neon Magenta" class="color-swatch w-7 h-7 rounded-lg bg-[#EC4899] opacity-80 hover:opacity-100 transition-all"></button>
+              
+              <!-- Custom Native Color Input -->
+              <div class="ml-auto flex items-center gap-2 bg-card border border-borderDark px-2.5 py-1 rounded-xl">
+                <input
+                  type="color"
+                  id="primaryColorPicker"
+                  value="#8B5CF6"
+                  aria-label="Custom Primary Hex Color"
+                  class="w-6 h-6 rounded cursor-pointer bg-transparent border-0"
+                />
+                <span class="text-xs text-zinc-400">Custom</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Main Subject -->
+          <div>
+            <label for="mainSubject" class="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
+              Main Foreground Subject
+            </label>
+            <input
+              type="text"
+              id="mainSubject"
+              name="mainSubject"
+              placeholder="e.g., Developer staring at holographic autonomous AI terminal"
+              class="w-full rounded-xl bg-card border border-borderDark focus:border-accentPurple focus:ring-2 focus:ring-accentPurple/25 px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 outline-none transition-all"
+            />
+          </div>
+
+          <!-- 8. Additional Instructions (Optional) -->
+          <div>
+            <label for="additionalInstructions" class="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
+              Additional Creative Instructions <span class="text-zinc-500 font-normal capitalize">(optional)</span>
+            </label>
+            <textarea
+              id="additionalInstructions"
+              name="additionalInstructions"
+              rows="2"
+              placeholder="e.g., Include glowing code reflections on eyeglasses, dramatic depth of field, high rim light..."
+              class="w-full rounded-xl bg-card border border-borderDark focus:border-accentPurple focus:ring-2 focus:ring-accentPurple/25 px-3.5 py-2 text-sm text-white placeholder-zinc-500 outline-none transition-all resize-y"
+            ></textarea>
+          </div>
+
+          <!-- Primary CTA Button: Generate Thumbnail Prompt -->
+          <div class="pt-2">
+            <button
+              type="submit"
+              id="generatePromptBtn"
+              class="w-full py-3.5 px-5 rounded-xl font-display font-bold text-sm sm:text-base text-white bg-gradient-to-r from-accentPurple via-electricBlue to-accentBlue hover:opacity-95 active:scale-[0.99] transition-all shadow-glow flex items-center justify-center gap-2.5 cursor-pointer"
+            >
+              <i class="fa-solid fa-wand-magic-sparkles" id="generateBtnIcon"></i>
+              <span id="generateBtnText">Generate Thumbnail Prompt</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- RIGHT COLUMN: PREVIEW AREA, GENERATED PROMPT & ALTERNATIVE CONCEPTS (7 COLUMNS ON DESKTOP) -->
+      <section class="lg:col-span-7 space-y-6">
+        
+        <!-- CARD 1: 16:9 THUMBNAIL PREVIEW AREA (BLUEPRINT + REAL AI IMAGE GENERATION) -->
+        <div class="bg-charcoal border border-borderDark rounded-2xl p-5 sm:p-6 shadow-xl">
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b border-borderDark">
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-lg bg-accentBlue/15 border border-accentBlue/40 text-accentBlue flex items-center justify-center text-xs font-bold">2</span>
+              <div>
+                <h2 class="font-display font-bold text-base sm:text-lg text-white flex items-center gap-2">
+                  16:9 Thumbnail Studio Preview
+                  <span id="previewModeBadge" class="text-[11px] font-mono uppercase px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                    Composition Blueprint
+                  </span>
+                </h2>
+              </div>
+            </div>
+
+            <!-- Blueprint Overlay Toggles & Mode Switch -->
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                id="toggleGridBtn"
+                class="text-xs px-2.5 py-1.5 rounded-lg bg-card hover:bg-cardHover border border-borderDark text-zinc-300 transition-colors flex items-center gap-1.5"
+                title="Toggle Rule-of-Thirds & YouTube Safe Zone overlays"
+              >
+                <i class="fa-solid fa-border-all text-accentPurple"></i>
+                <span>Safe Zones: ON</span>
+              </button>
+
+              <button
+                type="button"
+                id="switchToBlueprintBtn"
+                class="hidden text-xs px-2.5 py-1.5 rounded-lg bg-card hover:bg-cardHover border border-borderDark text-zinc-300 transition-colors flex items-center gap-1.5"
+              >
+                <i class="fa-solid fa-compass-drafting text-accentBlue"></i>
+                <span>Show Blueprint</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Honest Transparency Status Notice -->
+          <div id="honestyNoticeBar" class="mb-4 px-3.5 py-2.5 rounded-xl bg-card/90 border border-borderDark flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-300">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-circle-info text-accentBlue"></i>
+              <span id="honestyStatusText">
+                <strong>Interactive Layout Blueprint:</strong> Shows real-time 1280×720 visual hierarchy & safe zones. Click <em>"Render Real AI Image"</em> below to invoke the live Gemini Image model.
+              </span>
+            </div>
+          </div>
+
+          <!-- 16:9 ASPECT RATIO CONTAINER (1280x720 Proportional Preview) -->
+          <div id="previewStageContainer" class="relative w-full aspect-video rounded-xl overflow-hidden border border-borderDark bg-obsidian shadow-2xl thirds-grid select-none">
+            
+            <!-- MODE A: HONEST INTERACTIVE WIREFRAME BLUEPRINT -->
+            <div id="blueprintCanvasView" class="w-full h-full blueprint-grid relative flex flex-col justify-between p-4 sm:p-6 overflow-hidden transition-all duration-500">
+              
+              <!-- Dynamic Ambient Glow Backdrop representing Primary Color -->
+              <div id="blueprintGlowOrb" class="absolute -right-12 -top-12 w-72 h-72 rounded-full blur-3xl opacity-30 pointer-events-none transition-all duration-500" style="background: #8B5CF6;"></div>
+              <div id="blueprintSecondaryOrb" class="absolute -left-16 -bottom-16 w-64 h-64 rounded-full blur-3xl opacity-20 pointer-events-none transition-all duration-500" style="background: #06B6D4;"></div>
+
+              <!-- Top Row: Blueprint Metadata Header -->
+              <div class="relative z-10 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 bg-obsidian/80 backdrop-blur-md border border-white/10 px-2.5 py-1 rounded-lg text-[11px] font-mono text-zinc-300">
+                  <span class="w-2 h-2 rounded-full bg-accentPurple animate-pulse"></span>
+                  <span id="bpStyleTag">STYLE: CINEMATIC</span>
+                  <span class="text-zinc-600">|</span>
+                  <span id="bpCategoryTag">CAT: AI</span>
+                </div>
+
+                <div class="bg-obsidian/80 backdrop-blur-md border border-white/10 px-2.5 py-1 rounded-lg text-[11px] font-mono text-zinc-400">
+                  1280 × 720 (16:9) • LAYOUT WIREFRAME
+                </div>
+              </div>
+
+              <!-- Center Row: Dynamic Visual Hierarchy Zones (Text Hook Zone + Rule-of-Thirds Subject Zone) -->
+              <div class="relative z-10 my-auto grid grid-cols-12 gap-3 items-center py-2">
+                
+                <!-- Left 7 Cols: High-Impact Text Hook & Background Context Zone -->
+                <div id="bpTextZone" class="col-span-7 flex flex-col items-start justify-center space-y-2">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-accentBlue bg-accentBlue/10 border border-accentBlue/30 px-2 py-0.5 rounded">
+                    Focal Point #2 • Typography Hook Zone
+                  </span>
+                  <div id="bpOverlayTextBox" class="px-3.5 py-2 rounded-xl bg-obsidian/85 border-2 border-dashed border-white/25 shadow-lg max-w-full">
+                    <p id="bpOverlayTextDisplay" class="font-display font-extrabold text-lg sm:text-2xl md:text-3xl uppercase tracking-tight text-white leading-none break-words">
+                      AI CODES APPS?!
+                    </p>
+                  </div>
+                  <p id="bpEnvironmentHint" class="text-[11px] text-zinc-400 line-clamp-2 bg-obsidian/70 px-2.5 py-1 rounded-lg border border-white/5">
+                    <i class="fa-solid fa-layer-group text-accentPurple mr-1"></i>
+                    <span id="bpBgDescription">Background: High-depth futuristic AI lab with bokeh data streams</span>
+                  </p>
+                </div>
+
+                <!-- Right 5 Cols: Primary Subject Rule-of-Thirds Intersection Zone -->
+                <div id="bpSubjectZone" class="col-span-5 flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl bg-obsidian/75 border-2 border-dashed border-accentPurple/60 text-center relative">
+                  <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-accentPurple/20 border border-accentPurple flex items-center justify-center text-accentPurple mb-1.5 shadow-glowSm">
+                    <i id="bpSubjectIcon" class="fa-solid fa-user-astronaut text-lg sm:text-xl"></i>
+                  </div>
+                  <span class="text-[10px] font-mono uppercase tracking-wider text-purple-300">
+                    Focal Point #1 • Subject
+                  </span>
+                  <p id="bpSubjectTitle" class="text-xs sm:text-sm font-semibold text-white mt-0.5 line-clamp-2">
+                    Shocked developer looking at glowing laptop
+                  </p>
+                  <span id="bpExpressionBadge" class="mt-1 text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-zinc-300">
+                    😱 Shocked & Mind-Blown
+                  </span>
+                </div>
+              </div>
+
+              <!-- Bottom Row: Color Contrast Bar & YouTube Timestamp Obstruction Warning Zone -->
+              <div class="relative z-10 flex items-end justify-between gap-2">
+                <div class="flex items-center gap-2 bg-obsidian/80 backdrop-blur-md border border-white/10 px-2.5 py-1 rounded-lg text-[11px] font-mono text-zinc-300">
+                  <span>RIM LIGHT:</span>
+                  <span id="bpColorSwatchDot" class="w-3 h-3 rounded-full inline-block border border-white/40" style="background-color: #8B5CF6;"></span>
+                  <span id="bpColorCodeText">#8B5CF6</span>
+                </div>
+
+                <!-- Authentic YouTube Timestamp Safe-Zone Indicator -->
+                <div id="ytTimestampSafeZone" class="bg-black/90 text-white font-mono text-xs font-bold px-2 py-1 rounded border border-red-500/60 flex items-center gap-1.5 shadow" title="YouTube overlays video duration here—keep critical text out of this bottom-right corner!">
+                  <i class="fa-solid fa-ban text-red-400 text-[10px]"></i>
+                  <span>12:45 (YT UI Zone)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- MODE B: REAL AI GENERATED IMAGE VIEW (Hidden until user triggers real AI generation) -->
+            <div id="realAiImageView" class="hidden w-full h-full relative bg-black flex items-center justify-center">
+              <img
+                id="generatedThumbnailImg"
+                alt="Real AI Generated YouTube Thumbnail"
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute top-3 left-3 bg-emerald-950/90 border border-emerald-500/50 text-emerald-200 px-2.5 py-1 rounded-lg text-[11px] font-mono flex items-center gap-1.5 shadow-lg">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                REAL AI IMAGE RENDERED (1280×720)
+              </div>
+            </div>
+
+            <!-- LOADING OVERLAY FOR AI IMAGE GENERATION OR PROMPT SYNTHESIS -->
+            <div id="previewLoadingOverlay" class="hidden absolute inset-0 z-30 bg-obsidian/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-accentPurple to-accentBlue flex items-center justify-center animate-spin mb-4 shadow-glow">
+                <i class="fa-solid fa-circle-notch text-white text-xl"></i>
+              </div>
+              <h3 id="loadingOverlayTitle" class="font-display font-bold text-base text-white">Generating Real AI Thumbnail...</h3>
+              <p id="loadingOverlaySubtitle" class="text-xs text-zinc-400 mt-1 max-w-md">
+                Calling Gemini 3.1 Flash Image API with 16:9 aspect ratio & visual hierarchy constraints...
+              </p>
+            </div>
+          </div>
+
+          <!-- Action Bar Below Preview: Real AI Image Generation + Download Controls -->
+          <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-2.5">
+              <button
+                type="button"
+                id="generateRealImageBtn"
+                class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 transition-all shadow-lg flex items-center gap-2 cursor-pointer"
+              >
+                <i class="fa-solid fa-image"></i>
+                <span>Render Real AI Thumbnail (Gemini Image API)</span>
+              </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <!-- Download Real PNG (1280x720) - Strictly enabled only when a real AI image is available -->
+              <button
+                type="button"
+                id="downloadImageBtn"
+                disabled
+                title="Generate a real AI image first to enable 1280×720 PNG download"
+                class="px-3.5 py-2.5 rounded-xl text-xs font-semibold border border-borderDark bg-card text-zinc-500 cursor-not-allowed transition-all flex items-center gap-1.5"
+              >
+                <i class="fa-solid fa-download"></i>
+                <span>Download PNG (1280×720)</span>
+              </button>
+
+              <!-- Download Prompt (.txt) - Always available once prompt exists -->
+              <button
+                type="button"
+                id="downloadPromptTxtBtn"
+                class="px-3 py-2.5 rounded-xl text-xs font-semibold border border-borderDark bg-card hover:bg-cardHover text-zinc-200 transition-all flex items-center gap-1.5"
+                title="Export the detailed prompt and creative concepts as a .txt file"
+              >
+                <i class="fa-solid fa-file-lines text-accentBlue"></i>
+                <span>Export .TXT</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- API Status / Error Message Box (If real AI image generation encounters an error) -->
+          <div id="imageApiFeedbackBox" class="hidden mt-3 p-3.5 rounded-xl bg-amber-950/60 border border-amber-500/40 text-amber-200 text-xs flex items-start justify-between gap-3">
+            <div class="flex items-start gap-2.5">
+              <i class="fa-solid fa-circle-exclamation text-amber-400 mt-0.5"></i>
+              <div id="imageApiFeedbackText"></div>
+            </div>
+            <button type="button" id="closeApiFeedbackBtn" class="text-amber-300 hover:text-white">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 2: GENERATED IMAGE PROMPT INSPECTOR & CONTROLS -->
+        <div class="bg-charcoal border border-borderDark rounded-2xl p-5 sm:p-6 shadow-xl">
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b border-borderDark">
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-lg bg-accentPurple/15 border border-accentPurple/40 text-accentPurple flex items-center justify-center text-xs font-bold">3</span>
+              <div>
+                <h2 class="font-display font-bold text-base sm:text-lg text-white">Engineered Image-Generation Prompt</h2>
+                <p class="text-xs text-zinc-400">Ready for Midjourney v6, Gemini Image, DALL·E 3, or Flux (16:9, 1280×720)</p>
+              </div>
+            </div>
+
+            <span id="variationCounterBadge" class="text-[11px] font-mono px-2.5 py-1 rounded-lg bg-card border border-borderDark text-purple-300">
+              Angle Seed #1 • Rule of Thirds
+            </span>
+          </div>
+
+          <!-- Prompt Text Output Box -->
+          <div class="relative group">
+            <label for="generatedPromptTextarea" class="sr-only">Generated Image Prompt</label>
+            <textarea
+              id="generatedPromptTextarea"
+              rows="8"
+              readonly
+              class="w-full rounded-xl bg-obsidian border border-borderDark focus:border-accentPurple p-4 font-mono text-xs sm:text-sm text-zinc-200 leading-relaxed outline-none resize-y"
+            ></textarea>
+          </div>
+
+          <!-- Checklist Pills verifying all 12 required Prompt Engineering specs -->
+          <div class="mt-3 flex flex-wrap gap-1.5" aria-label="Included Prompt Specifications">
+            <span class="text-[11px] px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/20"><i class="fa-solid fa-check mr-1"></i>Subject & Placement</span>
+            <span class="text-[11px] px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/20"><i class="fa-solid fa-check mr-1"></i>Environment</span>
+            <span class="text-[11px] px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/20"><i class="fa-solid fa-check mr-1"></i>Lighting & Shadows</span>
+            <span class="text-[11px] px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/20"><i class="fa-solid fa-check mr-1"></i>Color Contrast</span>
+            <span class="text-[11px] px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/20"><i class="fa-solid fa-check mr-1"></i>Visual Hierarchy</span>
+            <span class="text-[11px] px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/20"><i class="fa-solid fa-check mr-1"></i>16:9 (1280×720)</span>
+            <span class="text-[11px] px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/20"><i class="fa-solid fa-check mr-1"></i>Anti-Clutter Guardrails</span>
+          </div>
+
+          <!-- Prompt Action Buttons: Copy Prompt, Regenerate Prompt, Edit Inputs -->
+          <div class="mt-4 pt-4 border-t border-borderDark flex flex-wrap items-center justify-between gap-2.5">
+            <div class="flex flex-wrap items-center gap-2.5">
+              <button
+                type="button"
+                id="copyPromptBtn"
+                class="px-4 py-2.5 rounded-xl bg-accentPurple hover:bg-purple-500 text-white font-semibold text-xs sm:text-sm transition-all shadow-glowSm flex items-center gap-2 cursor-pointer"
+              >
+                <i class="fa-regular fa-copy" id="copyBtnIcon"></i>
+                <span id="copyBtnText">Copy Prompt</span>
+              </button>
+
+              <button
+                type="button"
+                id="regeneratePromptBtn"
+                class="px-3.5 py-2.5 rounded-xl bg-card hover:bg-cardHover border border-borderDark hover:border-accentBlue/50 text-zinc-200 font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer"
+                title="Generate a fresh camera angle, lighting rig, and environmental metaphor for the same inputs"
+              >
+                <i class="fa-solid fa-arrows-rotate text-accentBlue" id="regenerateIcon"></i>
+                <span>Regenerate Prompt</span>
+              </button>
+
+              <button
+                type="button"
+                id="saveProjectDbBtn"
+                class="px-3.5 py-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-200 font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer"
+                title="Save this thumbnail project to PHP/MySQL backend (or LocalStorage fallback)"
+              >
+                <i class="fa-solid fa-database text-emerald-400"></i>
+                <span>Save to DB</span>
+              </button>
+            </div>
+
+            <button
+              type="button"
+              id="editInputsBtn"
+              class="px-3.5 py-2.5 rounded-xl bg-card hover:bg-cardHover border border-borderDark text-zinc-300 hover:text-white font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer"
+            >
+              <i class="fa-solid fa-sliders text-accentPurple"></i>
+              <span>Edit Inputs</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 3: THREE ALTERNATIVE CREATIVE CONCEPTS -->
+        <div class="bg-charcoal border border-borderDark rounded-2xl p-5 sm:p-6 shadow-xl">
+          <div class="flex items-center justify-between pb-4 mb-4 border-b border-borderDark">
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-lg bg-electricBlue/15 border border-electricBlue/40 text-electricBlue flex items-center justify-center text-xs font-bold">4</span>
+              <div>
+                <h2 class="font-display font-bold text-base sm:text-lg text-white">3 Alternative Creative Concepts</h2>
+                <p class="text-xs text-zinc-400">Proven high-CTR psychological thumbnail angles tailored to your video topic</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="conceptsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Dynamically populated by JS -->
+          </div>
+        </div>
+
+        <!-- CARD 4: SAVED PROJECTS / PHP + MYSQL HISTORY -->
+        <div class="bg-charcoal border border-borderDark rounded-2xl p-5 sm:p-6 shadow-xl">
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b border-borderDark">
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-lg bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-xs font-bold">5</span>
+              <div>
+                <h2 class="font-display font-bold text-base sm:text-lg text-white flex items-center gap-2">
+                  Saved Thumbnail Projects
+                  <span id="historyStorageBadge" class="text-[11px] font-mono px-2 py-0.5 rounded-full bg-card border border-borderDark text-zinc-400">
+                    Sync: Auto (PHP/MySQL + Local Fallback)
+                  </span>
+                </h2>
+                <p class="text-xs text-zinc-400">Reload or manage previously saved prompts & designs via `api.php?action=history`</p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              id="refreshHistoryBtn"
+              class="text-xs px-3 py-1.5 rounded-lg bg-card hover:bg-cardHover border border-borderDark text-zinc-300 transition-colors flex items-center gap-1.5 cursor-pointer"
+            >
+              <i class="fa-solid fa-rotate text-accentBlue"></i>
+              <span>Refresh List</span>
+            </button>
+          </div>
+
+          <div id="savedProjectsList" class="space-y-2.5 max-h-72 overflow-y-auto pr-1">
+            <!-- Populated dynamically by JS -->
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- PHP BACKEND CODE & SETUP MODAL (api.php, config.php, schema.sql) -->
+  <div id="phpBackendModal" role="dialog" aria-modal="true" aria-labelledby="phpModalTitle" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-charcoal border border-borderDark rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <!-- Modal Header -->
+      <div class="p-4 sm:p-5 border-b border-borderDark flex items-center justify-between gap-4 bg-obsidian/60">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-accentPurple/20 border border-accentPurple/40 flex items-center justify-center text-accentPurple">
+            <i class="fa-brands fa-php text-xl"></i>
+          </div>
+          <div>
+            <h2 id="phpModalTitle" class="font-display font-bold text-base sm:text-lg text-white">
+              Complete PHP + MySQL Backend Suite (`api.php`, `config.php`, `schema.sql`)
+            </h2>
+            <p class="text-xs text-zinc-400">
+              Drop these files into the same folder as <code class="text-accentBlue">index.html</code> on XAMPP, WAMP, Laragon, or cPanel.
+            </p>
+          </div>
+        </div>
+        <button type="button" id="closePhpModalBtn" class="text-zinc-400 hover:text-white p-2 rounded-lg bg-card border border-borderDark" aria-label="Close PHP Modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- File Tabs & Action Bar -->
+      <div class="px-4 sm:px-5 py-3 bg-card border-b border-borderDark flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2 flex-wrap" role="tablist">
+          <button type="button" data-php-tab="api.php" class="php-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-semibold bg-accentPurple text-white shadow-glowSm cursor-pointer">
+            1. api.php (Main Controller)
+          </button>
+          <button type="button" data-php-tab="config.php" class="php-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-semibold bg-obsidian text-zinc-300 border border-borderDark hover:text-white cursor-pointer">
+            2. config.php (DB & Gemini Key)
+          </button>
+          <button type="button" data-php-tab="schema.sql" class="php-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-semibold bg-obsidian text-zinc-300 border border-borderDark hover:text-white cursor-pointer">
+            3. schema.sql (MySQL Table)
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button type="button" id="copyPhpFileBtn" class="px-3 py-1.5 rounded-lg bg-obsidian hover:bg-cardHover border border-borderDark text-xs font-semibold text-zinc-200 flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-regular fa-copy text-accentPurple"></i>
+            <span id="copyPhpFileBtnText">Copy File Code</span>
+          </button>
+          <button type="button" id="downloadPhpFileBtn" class="px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-xs font-semibold text-emerald-200 flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-download text-emerald-400"></i>
+            <span id="downloadPhpFileBtnText">Download api.php</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Code Viewer Body -->
+      <div class="p-4 sm:p-5 overflow-y-auto flex-1 space-y-4">
+        <div class="p-3.5 rounded-xl bg-obsidian/90 border border-borderDark text-xs text-zinc-300 space-y-1">
+          <div class="font-semibold text-white flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-emerald-400"></i> How this Frontend + PHP Backend works together:
+          </div>
+          <p class="text-zinc-400 leading-relaxed">
+            1. Import <code class="text-purple-300">schema.sql</code> in phpMyAdmin (creates database <code class="text-purple-300">thumbnail_studio</code> and table <code class="text-purple-300">projects</code>).<br>
+            2. Set your MySQL credentials and <code class="text-purple-300">GEMINI_API_KEY</code> inside <code class="text-purple-300">config.php</code> (keeps your API key 100% hidden on the server).<br>
+            3. Place <code class="text-purple-300">index.html</code>, <code class="text-purple-300">api.php</code>, and <code class="text-purple-300">config.php</code> in <code class="text-purple-300">htdocs/thumbnail-studio/</code>. The app will automatically detect <code class="text-purple-300">api.php</code> and switch the top badge to <span class="text-emerald-400 font-semibold">PHP Backend Connected</span>!
+          </p>
+        </div>
+
+        <pre class="w-full rounded-xl bg-obsidian border border-borderDark p-4 overflow-x-auto text-xs font-mono text-zinc-200 leading-relaxed"><code id="phpCodeDisplay"></code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-borderDark bg-obsidian/90 py-5 mt-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span>Thumbnail Studio AI • Local Deterministic Prompt Engine + Live Gemini Image API Support</span>
+      </div>
+      <div>
+        Target Spec: <span class="text-zinc-300 font-mono">1280 × 720 px (16:9 Standard HD Thumbnail)</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING TOAST NOTIFICATION -->
+  <div id="toastNotification" role="status" aria-live="polite" class="fixed bottom-5 right-5 z-50 pointer-events-none opacity-0 translate-y-3 transition-all duration-300 bg-card border border-accentPurple/50 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3">
+    <div class="w-7 h-7 rounded-lg bg-accentPurple/20 text-accentPurple flex items-center justify-center">
+      <i id="toastIcon" class="fa-solid fa-check"></i>
+    </div>
+    <span id="toastMessage" class="text-xs sm:text-sm font-medium">Copied to clipboard!</span>
+  </div>
+
+  <!-- HIDDEN 1280x720 EXPORT CANVAS FOR EXACT RESOLUTION IMAGE DOWNLOADS -->
+  <canvas id="exportCanvas" width="1280" height="720" class="hidden"></canvas>
+
+  <!-- APPLICATION JAVASCRIPT -->
+  <script>
+    /***************************************************************************
+     * 2. APPLICATION STATE & EMBEDDED PHP BACKEND SOURCE FILES
+     ***************************************************************************/
+    const state = {
+      variationIndex: 0,
+      showSafeZones: true,
+      hasRealAiImage: false,
+      realAiImageDataUrl: null,
+      activeColorHex: "#8B5CF6",
+      activeColorLabel: "Electric Violet",
+      currentConcepts: [],
+      phpConnected: false,
+      activePhpTab: "api.php",
+      savedProjects: []
+    };
+
+    // Preset data dictionaries for sample loading and prompt generation
+    const SAMPLE_PRESETS = {
+      ai: {
+        videoTitle: "I Built an AI Agent That Codes Entire Apps in 10 Minutes",
+        videoDescription: "Demonstrating an autonomous AI agent building a fully functional web application from a single text prompt.",
+        category: "AI",
+        style: "Cinematic",
+        expression: "Shocked & Mind-Blown",
+        thumbnailText: "AI CODES APPS?!",
+        primaryColor: "#8B5CF6",
+        colorLabel: "Electric Violet",
+        mainSubject: "Hacker developer looking shocked at glowing holographic code interface",
+        additionalInstructions: "High contrast rim lighting, dark cyberpunk studio background, cinematic depth of field."
+      },
+      gaming: {
+        videoTitle: "Why This Secret Weapon is Ruining Ranked Matches",
+        videoDescription: "Uncovering a broken meta weapon in the latest multiplayer update that lets players dominate opponents.",
+        category: "Gaming",
+        style: "Gaming",
+        expression: "Intense & Hyper-Focused",
+        thumbnailText: "OP WEAPON!",
+        primaryColor: "#EF4444",
+        colorLabel: "Crimson Alert",
+        mainSubject: "Gamer wearing RGB headset with fiery red neon glow and intense focused expression",
+        additionalInstructions: "Dark battle arena background with glowing embers, dramatic red rim lighting, high-octane gaming aesthetic."
+      },
+      business: {
+        videoTitle: "How I Made $10,000/Month With a One-Person SaaS Business",
+        videoDescription: "Breaking down the exact revenue streams, tech stack, and marketing channels for solo founders.",
+        category: "Business",
+        style: "Minimalist",
+        expression: "Excited & Triumphant",
+        thumbnailText: "$10K/MO SOLO",
+        primaryColor: "#10B981",
+        colorLabel: "Matrix Emerald",
+        mainSubject: "Entrepreneur smiling in front of clean minimal desk setup with rising revenue dashboard chart",
+        additionalInstructions: "Sleek modern home office background, emerald green financial highlights, professional and clean composition."
+      }
+    };
+
+    const CATEGORY_ENVIRONMENTS = {
+      AI: [
+        "high-tech neural network laboratory with glowing holographic data streams and floating code nodes",
+        "futuristic quantum computing facility with obsidian walls and vibrant purple and cyan fiber optic lighting",
+        "minimalist dark developer workspace dual-monitor setup reflecting complex artificial intelligence workflows"
+      ],
+      Programming: [
+        "dark-mode IDE developer setup with neon syntax highlighting and bokeh city lights in the background",
+        "high-end mechanical keyboard desk station with glowing RGB lighting and architecture blueprints on screen",
+        "modern software engineering office with server racks and ambient purple backlighting"
+      ],
+      Gaming: [
+        "intense esports arena with dramatic stage lighting, smoke effects, and neon red and blue laser grids",
+        "dark RGB gaming room with glowing headset stand, dual curved monitors, and electric ambient glow",
+        "epic fantasy battleground environment with glowing particle effects and cinematic rim illumination"
+      ],
+      Education: [
+        "modern interactive whiteboard studio with clean typography graphs and glowing educational nodes",
+        "bright professional creator studio with warm bookshelf background and sharp focal lighting",
+        "futuristic digital academy classroom with holographic learning modules and floating diagrams"
+      ],
+      Vlogging: [
+        "cinematic urban rooftop at twilight with gorgeous bokeh city lights and warm amber sunset rim lighting",
+        "cozy aesthetic creator loft with warm ambient string lights, plants, and high-end mirrorless camera setup",
+        "dynamic travel adventure background with dramatic natural lighting and high-contrast scenery"
+      ],
+      Business: [
+        "luxurious modern glass penthouse office overlooking a glowing nighttime skyline with financial graphs",
+        "sleek minimalist startup boardroom with matte black finishes and emerald green accent lighting",
+        "professional keynote presentation stage with giant LED screen displaying growth metrics"
+      ],
+      Entertainment: [
+        "high-energy neon broadcast studio with dramatic spotlight beams and colorful particle confetti",
+        "cinematic movie production set with dramatic studio lighting rigs and smoky atmospheric depth",
+        "vibrant pop-culture media lab with bold high-contrast primary colors and dramatic shadows"
+      ],
+      Tutorials: [
+        "clean minimalist workbench studio with precision tools, bright daylight rim light, and organized props",
+        "high-contrast instructional studio with clear focal separation and professional softbox lighting",
+        "modern digital design workspace with tablet, stylus, and vibrant creative color palettes"
+      ],
+      Other: [
+        "cinematic dark studio background with professional three-point lighting and atmospheric color gels",
+        "high-contrast modern creative space with balanced lighting and sleek minimalist design elements",
+        "dramatic abstract background with rich textures and striking color contrast"
+      ]
+    };
+
+    const STYLE_SPECIFICATIONS = {
+      Cinematic: {
+        camera: "Shot on 35mm f/1.4 anamorphic cinema lens, shallow depth of field, dramatic framing",
+        lighting: "High-contrast Hollywood key light with intense color rim lighting and deep charcoal shadows",
+        rendering: "Ultra-sharp photorealistic textures, film grain, hyper-detailed skin and material surfaces"
+      },
+      Minimalist: {
+        camera: "Clean focal framing, generous negative space, perfectly balanced composition",
+        lighting: "Soft directional studio lighting with clean edge separation and zero clutter",
+        rendering: "Crisp vector-like precision, elegant matte surfaces, sophisticated high-end aesthetic"
+      },
+      Photorealistic: {
+        camera: "Professional 85mm portrait lens, razor-sharp focus on subject, natural bokeh",
+        lighting: "Natural volumetric window light blended with subtle professional fill lighting",
+        rendering: "Uncompromising physical accuracy, realistic ray-traced reflections, lifelike textures"
+      },
+      Gaming: {
+        camera: "Dynamic low-angle action framing, energetic perspective, high-impact composition",
+        lighting: "Vibrant RGB neon backlighting, aggressive contrast, punchy saturated color accents",
+        rendering: "High-octane game art style, crisp glowing particle effects, intense visual excitement"
+      },
+      Futuristic: {
+        camera: "Wide-angle sci-fi perspective, futuristic HUD overlay framing, immersive depth",
+        lighting: "Holographic glow, laser-sharp cyan and purple rim lights, dark obsidian shadows",
+        rendering: "Cyberpunk sci-fi realism, metallic sheens, glowing light paths, polished glass textures"
+      },
+      Educational: {
+        camera: "Clear medium close-up framing, authoritative centered placement, high legibility",
+        lighting: "Bright professional studio lighting, warm skin tones, friendly and accessible contrast",
+        rendering: "Polished educational media quality, sharp detail, clean uncluttered visual hierarchy"
+      }
+    };
+
+    const VARIATION_ANGLES = [
+      { name: "Angle Seed #1 • Rule of Thirds Hero", composition: "Positioned on the right Rule-of-Thirds intersection with direct eye contact" },
+      { name: "Angle Seed #2 • Dynamic Three-Quarter Turn", composition: "Angled three-quarters toward the camera with dramatic torso framing" },
+      { name: "Angle Seed #3 • Cinematic Low-Angle Power Pose", composition: "Shot from a powerful low angle looking up, creating an epic hero stature" },
+      { name: "Angle Seed #4 • Over-the-Shoulder Focus", composition: "Framed over the shoulder looking intensely toward the glowing focal point" }
+    ];
+
+    const PHP_BACKEND_FILES = {
+      "schema.sql": `-- ============================================================================
+-- Thumbnail Studio AI — MySQL Database Schema (schema.sql)
+-- Import this file via phpMyAdmin or MySQL CLI: mysql -u root -p < schema.sql
+-- ============================================================================
+
+CREATE DATABASE IF NOT EXISTS thumbnail_studio
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE thumbnail_studio;
+
+CREATE TABLE IF NOT EXISTS projects (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  video_title VARCHAR(255) NOT NULL,
+  video_description TEXT NULL,
+  category VARCHAR(60) NOT NULL DEFAULT 'AI',
+  style VARCHAR(60) NOT NULL DEFAULT 'Cinematic',
+  expression VARCHAR(100) NOT NULL DEFAULT 'Shocked & Mind-Blown',
+  thumbnail_text VARCHAR(100) NULL,
+  primary_color VARCHAR(20) NOT NULL DEFAULT '#8B5CF6',
+  main_subject VARCHAR(255) NULL,
+  additional_instructions TEXT NULL,
+  generated_prompt MEDIUMTEXT NOT NULL,
+  image_base64 LONGTEXT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;`,
+
+      "config.php": `<?php
+/**
+ * Thumbnail Studio AI — Database & Gemini API Configuration (config.php)
+ * Keep this file on your PHP server so your API key is never exposed in JS.
+ */
+
+// 1. MySQL Database Credentials (XAMPP / Laragon / cPanel defaults)
+define('DB_HOST', '127.0.0.1');
+define('DB_NAME', 'thumbnail_studio');
+define('DB_USER', 'root');
+define('DB_PASS', ''); // Default XAMPP password is empty
+
+// 2. Google Gemini API Key (Used by api.php?action=generate_image)
+// Get a key from Google AI Studio or set via environment variable
+define('GEMINI_API_KEY', getenv('GEMINI_API_KEY') ?: 'YOUR_GEMINI_API_KEY_HERE');
+define('GEMINI_IMAGE_MODEL', 'gemini-3.1-flash-image');
+
+/**
+ * Returns a PDO connection to MySQL (or null if DB is not yet imported)
+ */
+function getDbConnection(): ?PDO {
+    static $pdo = null;
+    if ($pdo !== null) return $pdo;
+
+    try {
+        $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+        $pdo = new PDO($dsn, DB_USER, DB_PASS, [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]);
+        return $pdo;
+    } catch (PDOException $e) {
+        return null; // Graceful fallback if DB isn't created yet
+    }
+}
+?>`,
+
+      "api.php": `<?php
+/**
+ * Thumbnail Studio AI — Full REST API Controller (api.php)
+ * Endpoints:
+ *   GET  api.php?action=ping            -> Health check + DB status
+ *   POST api.php?action=generate_prompt -> Server-side 12-point prompt & 3 concepts
+ *   POST api.php?action=generate_image  -> Proxies Gemini 3.1 Flash Image API (16:9)
+ *   POST api.php?action=save_project    -> Saves prompt & metadata into MySQL
+ *   GET  api.php?action=history         -> Lists recent saved projects from MySQL
+ *   POST api.php?action=delete_project  -> Deletes a saved project by ID
+ */
+
+header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
+require_once __DIR__ . '/config.php';
+
+$action = $_GET['action'] ?? 'ping';
+$rawBody = file_get_contents('php://input');
+$input = json_decode($rawBody, true) ?? $_POST;
+
+switch ($action) {
+    case 'ping':
+        $pdo = getDbConnection();
+        echo json_encode([
+            'status'      => 'ok',
+            'php_version' => PHP_VERSION,
+            'db_connected'=> $pdo !== null,
+            'message'     => $pdo ? 'PHP & MySQL Connected' : 'PHP Connected (MySQL optional/not imported)'
+        ]);
+        break;
+
+    case 'generate_prompt':
+        $title = trim($input['title'] ?? '');
+        if ($title === '') {
+            http_response_code(422);
+            echo json_encode(['status' => 'error', 'message' => 'Video Title is required.']);
+            exit;
+        }
+
+        $category   = trim($input['category'] ?? 'AI');
+        $style      = trim($input['style'] ?? 'Cinematic');
+        $expression = trim($input['expression'] ?? 'Shocked & Mind-Blown');
+        $text       = trim($input['textOverlay'] ?? '');
+        $color      = trim($input['primaryColor'] ?? '#8B5CF6');
+        $colorLabel = trim($input['colorLabel'] ?? 'Electric Violet');
+        $subject    = trim($input['mainSubject'] ?? '') ?: "Expressive {$category} creator reacting to {$title}";
+        $desc       = trim($input['description'] ?? '');
+        $additional = trim($input['additional'] ?? '');
+
+        $textRule = $text !== ''
+            ? "Render exact bold text \\"{$text}\\" in upper-left safe zone with high-contrast white fill and {$color} glow. Keep bottom-right clear for YouTube timestamp."
+            : "Do not render any text inside the image; reserve clean negative space on the left third.";
+
+        $prompt = implode("\\n", [
+            "PROFESSIONAL YOUTUBE THUMBNAIL PROMPT (PHP Engine) — \\"{$title}\\" ({$category} / {$style} Style)",
+            "",
+            "• Main Subject & Placement: {$subject}, positioned on the Rule-of-Thirds intersection.",
+            "• Facial Expression & Emotion: High-retention \\"{$expression}\\" expression with direct eye contact and catchlights.",
+            "• Background & Environment: High-depth {$category} studio environment tailored to \\"{$title}\\". " . ($desc ? "Context: {$desc}. " : "") . "Soft bokeh separation.",
+            "• Composition & Framing: 35mm f/1.4 cinema lens, engineered for instant mobile CTR legibility.",
+            "• Lighting & Shadows: Dramatic studio key light with intense {$color} ({$colorLabel}) rim lighting and deep charcoal shadows.",
+            "• Color Palette & Contrast: High-contrast palette anchored by {$color} against #09090B obsidian tones.",
+            "• Visual Hierarchy: 1) Primary focus on {$subject}, 2) Secondary focus on " . ($text ?: "focal story object") . ", 3) Atmospheric depth.",
+            "• Text Placement & Copy: {$textRule}",
+            "• Artistic Style: {$style} execution with razor-sharp micro-contrast." . ($additional ? " Custom notes: {$additional}." : ""),
+            "• Technical Format: Strict 16:9 widescreen aspect ratio, target resolution 1280 × 720 pixels.",
+            "• Negative / Avoidance Guardrails: Avoid clutter, distorted objects, extra limbs, low contrast, watermarks, and unreadable text."
+        ]);
+
+        echo json_encode([
+            'status' => 'ok',
+            'source' => 'php_backend',
+            'prompt' => $prompt
+        ]);
+        break;
+
+    case 'generate_image':
+        $prompt = trim($input['prompt'] ?? '');
+        if ($prompt === '') {
+            http_response_code(422);
+            echo json_encode(['status' => 'error', 'message' => 'Prompt is required for image generation.']);
+            exit;
+        }
+
+        if (!defined('GEMINI_API_KEY') || GEMINI_API_KEY === '' || GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE') {
+            http_response_code(400);
+            echo json_encode([
+                'status'  => 'error',
+                'message' => 'Please set your GEMINI_API_KEY inside config.php on your PHP server.'
+            ]);
+            exit;
+        }
+
+        $apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/" . GEMINI_IMAGE_MODEL . ":generateContent?key=" . urlencode(GEMINI_API_KEY);
+        $payload = json_encode([
+            'contents' => [[
+                'role'  => 'user',
+                'parts' => [['text' => $prompt]]
+            ]],
+            'generationConfig' => [
+                'responseModalities' => ['IMAGE'],
+                'imageConfig'        => ['aspectRatio' => '16:9']
+            ]
+        ]);
+
+        $ch = curl_init($apiUrl);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST           => true,
+            CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
+            CURLOPT_POSTFIELDS     => $payload,
+            CURLOPT_TIMEOUT        => 60
+        ]);
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlErr  = curl_error($ch);
+        curl_close($ch);
+
+        if ($curlErr || $httpCode >= 400) {
+            http_response_code(502);
+            echo json_encode([
+                'status'  => 'error',
+                'message' => 'Gemini API Error via PHP cURL: ' . ($curlErr ?: $response)
+            ]);
+            exit;
+        }
+
+        $decoded = json_decode($response, true);
+        $parts = $decoded['candidates'][0]['content']['parts'] ?? [];
+        $imagePart = null;
+        foreach ($parts as $p) {
+            if (!empty($p['inlineData']['data'])) {
+                $imagePart = $p['inlineData'];
+                break;
+            }
+        }
+
+        if (!$imagePart) {
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'No image returned from Gemini model.']);
+            exit;
+        }
+
+        $mime = $imagePart['mimeType'] ?? 'image/png';
+        echo json_encode([
+            'status'    => 'ok',
+            'source'    => 'php_gemini_proxy',
+            'image_url' => "data:{$mime};base64," . $imagePart['data']
+        ]);
+        break;
+
+    case 'save_project':
+        $pdo = getDbConnection();
+        if (!$pdo) {
+            http_response_code(503);
+            echo json_encode(['status' => 'error', 'message' => 'MySQL database not connected. Import schema.sql first.']);
+            exit;
+        }
+
+        $stmt = $pdo->prepare("
+            INSERT INTO projects
+              (video_title, video_description, category, style, expression, thumbnail_text, primary_color, main_subject, additional_instructions, generated_prompt, image_base64)
+            VALUES
+              (:title, :desc, :cat, :style, :expr, :text, :color, :subj, :add, :prompt, :img)
+        ");
+        $stmt->execute([
+            ':title'  => $input['title'] ?? 'Untitled Video',
+            ':desc'   => $input['description'] ?? '',
+            ':cat'    => $input['category'] ?? 'AI',
+            ':style'  => $input['style'] ?? 'Cinematic',
+            ':expr'   => $input['expression'] ?? 'Shocked & Mind-Blown',
+            ':text'   => $input['textOverlay'] ?? '',
+            ':color'  => $input['primaryColor'] ?? '#8B5CF6',
+            ':subj'   => $input['mainSubject'] ?? '',
+            ':add'    => $input['additional'] ?? '',
+            ':prompt' => $input['prompt'] ?? '',
+            ':img'    => $input['imageDataUrl'] ?? null
+        ]);
+
+        echo json_encode([
+            'status' => 'ok',
+            'id'     => $pdo->lastInsertId(),
+            'message'=> 'Project saved to MySQL database!'
+        ]);
+        break;
+
+    case 'history':
+        $pdo = getDbConnection();
+        if (!$pdo) {
+            echo json_encode(['status' => 'ok', 'source' => 'no_db', 'projects' => []]);
+            exit;
+        }
+        $stmt = $pdo->query("SELECT id, video_title, video_description, category, style, expression, thumbnail_text, primary_color, main_subject, additional_instructions, generated_prompt, created_at FROM projects ORDER BY id DESC LIMIT 20");
+        echo json_encode([
+            'status'   => 'ok',
+            'source'   => 'mysql',
+            'projects' => $stmt->fetchAll()
+        ]);
+        break;
+
+    case 'delete_project':
+        $pdo = getDbConnection();
+        if (!$pdo) {
+            http_response_code(503);
+            echo json_encode(['status' => 'error', 'message' => 'MySQL not connected.']);
+            exit;
+        }
+        $id = (int)($input['id'] ?? 0);
+        $stmt = $pdo->prepare("DELETE FROM projects WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        echo json_encode(['status' => 'ok', 'message' => 'Deleted project #' . $id]);
+        break;
+
+    default:
+        http_response_code(400);
+        echo json_encode(['status' => 'error', 'message' => 'Unknown action']);
+}
+?>`
+    };
+
+    /***************************************************************************
+     * 3. DOM ELEMENT REFERENCES
+     ***************************************************************************/
+    const dom = {
+      form: document.getElementById("thumbnailForm"),
+      inputFormSection: document.getElementById("inputFormSection"),
+      videoTitle: document.getElementById("videoTitle"),
+      titleErrorBadge: document.getElementById("titleErrorBadge"),
+      videoDescription: document.getElementById("videoDescription"),
+      categorySelect: document.getElementById("categorySelect"),
+      expressionSelect: document.getElementById("expressionSelect"),
+      thumbnailStyleInput: document.getElementById("thumbnailStyle"),
+      stylePills: document.querySelectorAll(".style-pill"),
+      thumbnailText: document.getElementById("thumbnailText"),
+      textLengthBadge: document.getElementById("textLengthBadge"),
+      primaryColorPicker: document.getElementById("primaryColorPicker"),
+      colorSwatches: document.querySelectorAll(".color-swatch"),
+      colorNameLabel: document.getElementById("colorNameLabel"),
+      mainSubject: document.getElementById("mainSubject"),
+      additionalInstructions: document.getElementById("additionalInstructions"),
+      
+      // Validation Banner
+      validationBanner: document.getElementById("validationBanner"),
+      validationTitle: document.getElementById("validationTitle"),
+      validationMessage: document.getElementById("validationMessage"),
+      closeValidationBtn: document.getElementById("closeValidationBtn"),
+
+      // Buttons
+      generatePromptBtn: document.getElementById("generatePromptBtn"),
+      generateBtnIcon: document.getElementById("generateBtnIcon"),
+      generateBtnText: document.getElementById("generateBtnText"),
+      clearFormBtn: document.getElementById("clearFormBtn"),
+      copyPromptBtn: document.getElementById("copyPromptBtn"),
+      copyBtnIcon: document.getElementById("copyBtnIcon"),
+      copyBtnText: document.getElementById("copyBtnText"),
+      regeneratePromptBtn: document.getElementById("regeneratePromptBtn"),
+      regenerateIcon: document.getElementById("regenerateIcon"),
+      saveProjectDbBtn: document.getElementById("saveProjectDbBtn"),
+      editInputsBtn: document.getElementById("editInputsBtn"),
+      toggleGridBtn: document.getElementById("toggleGridBtn"),
+      switchToBlueprintBtn: document.getElementById("switchToBlueprintBtn"),
+      generateRealImageBtn: document.getElementById("generateRealImageBtn"),
+      downloadImageBtn: document.getElementById("downloadImageBtn"),
+      downloadPromptTxtBtn: document.getElementById("downloadPromptTxtBtn"),
+
+      // PHP Backend Bar, History & Modal Elements
+      phpStatusBadge: document.getElementById("phpStatusBadge"),
+      phpStatusDot: document.getElementById("phpStatusDot"),
+      phpStatusText: document.getElementById("phpStatusText"),
+      phpEndpointInput: document.getElementById("phpEndpointInput"),
+      pingPhpBtn: document.getElementById("pingPhpBtn"),
+      phpDetailedNotice: document.getElementById("phpDetailedNotice"),
+      openPhpModalBtn: document.getElementById("openPhpModalBtn"),
+      closePhpModalBtn: document.getElementById("closePhpModalBtn"),
+      phpBackendModal: document.getElementById("phpBackendModal"),
+      phpTabBtns: document.querySelectorAll(".php-tab-btn"),
+      phpCodeDisplay: document.getElementById("phpCodeDisplay"),
+      copyPhpFileBtn: document.getElementById("copyPhpFileBtn"),
+      copyPhpFileBtnText: document.getElementById("copyPhpFileBtnText"),
+      downloadPhpFileBtn: document.getElementById("downloadPhpFileBtn"),
+      downloadPhpFileBtnText: document.getElementById("downloadPhpFileBtnText"),
+      savedProjectsList: document.getElementById("savedProjectsList"),
+      refreshHistoryBtn: document.getElementById("refreshHistoryBtn"),
+      historyStorageBadge: document.getElementById("historyStorageBadge"),
+
+      // Preview & Blueprint Elements
+      previewModeBadge: document.getElementById("previewModeBadge"),
+      honestyStatusText: document.getElementById("honestyStatusText"),
+      previewStageContainer: document.getElementById("previewStageContainer"),
+      blueprintCanvasView: document.getElementById("blueprintCanvasView"),
+      realAiImageView: document.getElementById("realAiImageView"),
+      generatedThumbnailImg: document.getElementById("generatedThumbnailImg"),
+      previewLoadingOverlay: document.getElementById("previewLoadingOverlay"),
+      loadingOverlayTitle: document.getElementById("loadingOverlayTitle"),
+      loadingOverlaySubtitle: document.getElementById("loadingOverlaySubtitle"),
+      imageApiFeedbackBox: document.getElementById("imageApiFeedbackBox"),
+      imageApiFeedbackText: document.getElementById("imageApiFeedbackText"),
+      closeApiFeedbackBtn: document.getElementById("closeApiFeedbackBtn"),
+
+      // Blueprint Dynamic Nodes
+      blueprintGlowOrb: document.getElementById("blueprintGlowOrb"),
+      bpStyleTag: document.getElementById("bpStyleTag"),
+      bpCategoryTag: document.getElementById("bpCategoryTag"),
+      bpOverlayTextBox: document.getElementById("bpOverlayTextBox"),
+      bpOverlayTextDisplay: document.getElementById("bpOverlayTextDisplay"),
+      bpBgDescription: document.getElementById("bpBgDescription"),
+      bpSubjectTitle: document.getElementById("bpSubjectTitle"),
+      bpExpressionBadge: document.getElementById("bpExpressionBadge"),
+      bpColorSwatchDot: document.getElementById("bpColorSwatchDot"),
+      bpColorCodeText: document.getElementById("bpColorCodeText"),
+      ytTimestampSafeZone: document.getElementById("ytTimestampSafeZone"),
+
+      // Output Areas
+      variationCounterBadge: document.getElementById("variationCounterBadge"),
+      generatedPromptTextarea: document.getElementById("generatedPromptTextarea"),
+      conceptsGrid: document.getElementById("conceptsGrid"),
+
+      // Toast & Export Canvas
+      toastNotification: document.getElementById("toastNotification"),
+      toastMessage: document.getElementById("toastMessage"),
+      toastIcon: document.getElementById("toastIcon"),
+      exportCanvas: document.getElementById("exportCanvas")
+    };
+
+    /***************************************************************************
+     * 3B. PHP BACKEND CONNECTOR (`api.php` WITH GRACEFUL LOCAL FALLBACK)
+     ***************************************************************************/
+    function getPhpEndpointUrl(action) {
+      const base = (dom.phpEndpointInput.value || "api.php").trim();
+      const sep = base.includes("?") ? "&" : "?";
+      return `${base}${sep}action=${encodeURIComponent(action)}`;
+    }
+
+    async function pingPhpBackend(showToastOnResult = false) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2200);
+        const res = await fetch(getPhpEndpointUrl("ping"), {
+          method: "GET",
+          headers: { "Accept": "application/json" },
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (data && data.status === "ok") {
+          state.phpConnected = true;
+          dom.phpStatusDot.className = "w-2 h-2 rounded-full bg-emerald-400";
+          dom.phpStatusText.textContent = data.db_connected
+            ? "PHP + MySQL Connected (`api.php`)"
+            : "PHP Connected (MySQL Optional)";
+          dom.phpDetailedNotice.textContent = `Connected to PHP ${data.php_version || ""} backend! All actions route through api.php.`;
+          dom.historyStorageBadge.textContent = data.db_connected
+            ? "Storage: MySQL Database (`api.php`)"
+            : "Storage: LocalStorage (Import schema.sql for MySQL)";
+          if (showToastOnResult) {
+            showToast("Connected to live PHP Backend (`api.php`)!", "fa-brands fa-php");
+          }
+          return true;
+        }
+        throw new Error("Invalid JSON response from api.php");
+      } catch (err) {
+        state.phpConnected = false;
+        dom.phpStatusDot.className = "w-2 h-2 rounded-full bg-amber-400";
+        dom.phpStatusText.textContent = "Sandbox Mode (Local Fallback Active)";
+        dom.phpDetailedNotice.textContent = "PHP server not detected in static preview → Local Engine + LocalStorage active (Ready for XAMPP/cPanel).";
+        dom.historyStorageBadge.textContent = "Storage: Browser LocalStorage (PHP Fallback)";
+        if (showToastOnResult) {
+          showToast("No live PHP server at api.php — using built-in Local Fallback. Click 'PHP Backend Files' to download api.php!", "fa-solid fa-circle-info");
+        }
+        return false;
+      }
+    }
+
+    async function loadSavedProjectsHistory() {
+      // 1. Try PHP/MySQL first if reachable
+      try {
+        const res = await fetch(getPhpEndpointUrl("history"), { method: "GET" });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.status === "ok" && Array.isArray(data.projects) && data.source === "mysql") {
+            state.savedProjects = data.projects;
+            renderSavedProjectsList(state.savedProjects, "MySQL");
+            return;
+          }
+        }
+      } catch (_) {
+        // Fallback to LocalStorage below
+      }
+
+      // 2. Fallback to LocalStorage
+      try {
+        const raw = localStorage.getItem("thumbnail_studio_projects_v1");
+        state.savedProjects = raw ? JSON.parse(raw) : [];
+      } catch (_) {
+        state.savedProjects = [];
+      }
+      renderSavedProjectsList(state.savedProjects, "Local");
+    }
+
+    async function saveCurrentProjectToBackend() {
+      const inputs = getFormValues();
+      if (!inputs.title) {
+        showValidationError("Video Title Required", "Please enter a Video Title before saving to the database.");
+        return;
+      }
+      if (!dom.generatedPromptTextarea.value.trim()) {
+        runPromptGenerationFlow(false);
+      }
+
+      const payload = {
+        ...inputs,
+        prompt: dom.generatedPromptTextarea.value.trim(),
+        imageDataUrl: state.hasRealAiImage ? state.realAiImageDataUrl : null
+      };
+
+      // Try saving to PHP + MySQL (`api.php?action=save_project`)
+      try {
+        const res = await fetch(getPhpEndpointUrl("save_project"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.status === "ok") {
+            showToast(`Saved Project #${data.id} to MySQL via api.php!`, "fa-solid fa-database");
+            await loadSavedProjectsHistory();
+            return;
+          }
+        }
+      } catch (_) {
+        // Fall through to LocalStorage fallback
+      }
+
+      // LocalStorage Fallback when running in static preview without XAMPP/MySQL
+      const newRecord = {
+        id: Date.now(),
+        video_title: inputs.title,
+        video_description: inputs.description,
+        category: inputs.category,
+        style: inputs.style,
+        expression: inputs.expression,
+        thumbnail_text: inputs.textOverlay,
+        primary_color: inputs.primaryColor,
+        main_subject: inputs.mainSubject,
+        additional_instructions: inputs.additional,
+        generated_prompt: payload.prompt,
+        created_at: new Date().toLocaleString()
+      };
+
+      state.savedProjects.unshift(newRecord);
+      state.savedProjects = state.savedProjects.slice(0, 20);
+      try {
+        localStorage.setItem("thumbnail_studio_projects_v1", JSON.stringify(state.savedProjects));
+      } catch (_) {}
+
+      renderSavedProjectsList(state.savedProjects, "Local");
+      showToast("Project saved (Local Fallback active — connect api.php for MySQL)!", "fa-solid fa-floppy-disk");
+    }
+
+    async function deleteSavedProject(projectId) {
+      try {
+        const res = await fetch(getPhpEndpointUrl("delete_project"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: projectId })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.status === "ok") {
+            showToast(`Deleted project #${projectId} from MySQL!`);
+            await loadSavedProjectsHistory();
+            return;
+          }
+        }
+      } catch (_) {}
+
+      state.savedProjects = state.savedProjects.filter((p) => String(p.id) !== String(projectId));
+      try {
+        localStorage.setItem("thumbnail_studio_projects_v1", JSON.stringify(state.savedProjects));
+      } catch (_) {}
+      renderSavedProjectsList(state.savedProjects, "Local");
+      showToast("Removed project from saved history.");
+    }
+
+    function renderSavedProjectsList(projects, sourceLabel = "Local") {
+      dom.savedProjectsList.innerHTML = "";
+      if (!projects || projects.length === 0) {
+        dom.savedProjectsList.innerHTML = `
+          <div class="text-center py-6 px-4 rounded-xl border border-dashed border-borderDark text-xs text-zinc-500">
+            No saved thumbnail projects yet. Click <strong>"Save to DB"</strong> under the prompt box to store your work via <code class="text-zinc-400">api.php</code> or LocalStorage.
+          </div>
+        `;
+        return;
+      }
+
+      projects.forEach((proj) => {
+        const row = document.createElement("div");
+        row.className = "p-3.5 rounded-xl bg-card hover:bg-cardHover border border-borderDark flex flex-wrap items-center justify-between gap-3 transition-all";
+        row.innerHTML = `
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="w-2.5 h-2.5 rounded-full inline-block" style="background:${proj.primary_color || '#8B5CF6'}"></span>
+              <h4 class="font-display font-bold text-xs sm:text-sm text-white truncate">${proj.video_title}</h4>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-obsidian border border-borderDark text-purple-300">${proj.category} • ${proj.style}</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">${sourceLabel}</span>
+            </div>
+            <p class="text-[11px] text-zinc-400 truncate mt-1 font-mono">${(proj.generated_prompt || "").slice(0, 95)}...</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" data-load-id="${proj.id}" class="load-proj-btn px-2.5 py-1.5 rounded-lg bg-accentPurple/20 hover:bg-accentPurple/40 border border-accentPurple/50 text-xs font-semibold text-white cursor-pointer">
+              <i class="fa-solid fa-upload mr-1"></i>Load
+            </button>
+            <button type="button" data-del-id="${proj.id}" class="del-proj-btn px-2.5 py-1.5 rounded-lg bg-obsidian hover:bg-red-500/20 border border-borderDark hover:border-red-500/40 text-xs text-zinc-400 hover:text-red-300 cursor-pointer" title="Delete project">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        `;
+        dom.savedProjectsList.appendChild(row);
+      });
+
+      dom.savedProjectsList.querySelectorAll(".load-proj-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-load-id");
+          const found = state.savedProjects.find((p) => String(p.id) === String(id));
+          if (!found) return;
+
+          dom.videoTitle.value = found.video_title || "";
+          dom.videoDescription.value = found.video_description || "";
+          dom.categorySelect.value = found.category || "AI";
+          dom.expressionSelect.value = found.expression || "Shocked & Mind-Blown";
+          dom.thumbnailText.value = found.thumbnail_text || "";
+          dom.mainSubject.value = found.main_subject || "";
+          dom.additionalInstructions.value = found.additional_instructions || "";
+          selectStylePill(found.style || "Cinematic");
+          setActivePrimaryColor(found.primary_color || "#8B5CF6", "Loaded Color");
+          updateTextOverlayBadge();
+
+          dom.generatedPromptTextarea.value = found.generated_prompt || buildDetailedThumbnailPrompt(getFormValues(), 0);
+          state.currentConcepts = generateThreeAlternativeConcepts(getFormValues());
+          renderAlternativeConcepts(state.currentConcepts);
+          updateBlueprintPreview(getFormValues());
+          showToast(`Loaded "${found.video_title}" into workspace!`);
+        });
+      });
+
+      dom.savedProjectsList.querySelectorAll(".del-proj-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          deleteSavedProject(btn.getAttribute("data-del-id"));
+        });
+      });
+    }
+
+    function selectPhpModalTab(fileName) {
+      state.activePhpTab = fileName;
+      dom.phpCodeDisplay.textContent = PHP_BACKEND_FILES[fileName] || "";
+      dom.downloadPhpFileBtnText.textContent = `Download ${fileName}`;
+
+      dom.phpTabBtns.forEach((btn) => {
+        const isCurrent = btn.getAttribute("data-php-tab") === fileName;
+        if (isCurrent) {
+          btn.className = "php-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-semibold bg-accentPurple text-white shadow-glowSm cursor-pointer";
+        } else {
+          btn.className = "php-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-semibold bg-obsidian text-zinc-300 border border-borderDark hover:text-white cursor-pointer";
+        }
+      });
+    }
+
+    /***************************************************************************
+     * 4. HELPER UTILITIES (TOAST, VALIDATION, COLOR FORMATTING)
+     ***************************************************************************/
+    let toastTimeout = null;
+    function showToast(message, iconClass = "fa-solid fa-check") {
+      dom.toastMessage.textContent = message;
+      dom.toastIcon.className = iconClass;
+      dom.toastNotification.classList.remove("opacity-0", "translate-y-3");
+      dom.toastNotification.classList.add("opacity-100", "translate-y-0");
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        dom.toastNotification.classList.add("opacity-0", "translate-y-3");
+        dom.toastNotification.classList.remove("opacity-100", "translate-y-0");
+      }, 2800);
+    }
+
+    function showValidationError(title, message) {
+      dom.validationTitle.textContent = title;
+      dom.validationMessage.textContent = message;
+      dom.validationBanner.classList.remove("hidden");
+      dom.titleErrorBadge.classList.remove("hidden");
+      dom.videoTitle.classList.add("border-red-500", "ring-2", "ring-red-500/30");
+      dom.videoTitle.focus();
+    }
+
+    function clearValidationError() {
+      dom.validationBanner.classList.add("hidden");
+      dom.titleErrorBadge.classList.add("hidden");
+      dom.videoTitle.classList.remove("border-red-500", "ring-2", "ring-red-500/30");
+    }
+
+    function getFormValues() {
+      const title = dom.videoTitle.value.trim();
+      const description = dom.videoDescription.value.trim();
+      const category = dom.categorySelect.value;
+      const expression = dom.expressionSelect.value;
+      const style = dom.thumbnailStyleInput.value;
+      const textOverlay = dom.thumbnailText.value.trim();
+      const primaryColor = state.activeColorHex.toUpperCase();
+      const colorLabel = state.activeColorLabel;
+      const mainSubject = dom.mainSubject.value.trim() || deriveDefaultSubject(title, category);
+      const additional = dom.additionalInstructions.value.trim();
+
+      return {
+        title,
+        description,
+        category,
+        expression,
+        style,
+        textOverlay,
+        primaryColor,
+        colorLabel,
+        mainSubject,
+        additional
+      };
+    }
+
+    function deriveDefaultSubject(title, category) {
+      if (!title) return `Expressive ${category.toLowerCase()} creator interacting with a glowing hero object`;
+      return `Expressive ${category} subject directly reacting to "${title.slice(0, 48)}"`;
+    }
+
+    /***************************************************************************
+     * 5. CORE PROMPT GENERATION ENGINE (100% SPECIFIC, STRUCTURED, DETERMINISTIC)
+     ***************************************************************************/
+    function buildDetailedThumbnailPrompt(inputs, variationIdx = 0) {
+      const envList = CATEGORY_ENVIRONMENTS[inputs.category] || CATEGORY_ENVIRONMENTS.Other;
+      const selectedEnv = envList[variationIdx % envList.length];
+      const styleSpec = STYLE_SPECIFICATIONS[inputs.style] || STYLE_SPECIFICATIONS.Cinematic;
+      const angleSpec = VARIATION_ANGLES[variationIdx % VARIATION_ANGLES.length];
+
+      const descContext = inputs.description
+        ? `Narrative Context: "${inputs.description}". `
+        : "";
+
+      const expressionDirective = inputs.expression.includes("None")
+        ? `Object-Centric Focus: No human face required; emphasize hyper-detailed surface fidelity and dramatic scale on the central object.`
+        : `Facial Expression & Emotion: Authentic, high-retention "${inputs.expression}" expression with intense eye contact, micro-expressions of high stakes, and catchlights in the eyes.`;
+
+      const textDirective = inputs.textOverlay
+        ? `Text Placement & Exact Typography: Render the exact text "${inputs.textOverlay}" in massive, ultra-bold sans-serif headline typography positioned in the upper-left negative space zone. Apply high-contrast white fill, subtle dark drop shadow, and a ${inputs.primaryColor} outer glow for instant mobile legibility. Keep the bottom-right corner completely clear for the YouTube timestamp.`
+        : `Text Placement & Copy: Do NOT render any text or letters inside the image; reserve clean negative space on the left third for external post-production typography.`;
+
+      const customNotes = inputs.additional
+        ? `\n• Custom Art Direction: ${inputs.additional}.`
+        : "";
+
+      return [
+        `PROFESSIONAL YOUTUBE THUMBNAIL PROMPT — "${inputs.title}" (${inputs.category} / ${inputs.style} Style)`,
+        ``,
+        `• Main Subject & Placement: ${inputs.mainSubject}. ${angleSpec.composition}.`,
+        `• ${expressionDirective}`,
+        `• Background & Environment: Set inside a ${selectedEnv}, specifically tailored to the topic "${inputs.title}". ${descContext}Background elements are softly defocused to maintain instant foreground separation.`,
+        `• Composition & Framing: ${styleSpec.camera}. Framed for maximum Click-Through Rate (CTR) at small mobile preview sizes.`,
+        `• Lighting & Shadows: ${styleSpec.lighting}. Strong directional rim lighting in ${inputs.primaryColor} (${inputs.colorLabel}) sculpting the subject's silhouette against deep obsidian and charcoal shadows.`,
+        `• Color Palette & Contrast: High-contrast palette anchored by ${inputs.primaryColor} (${inputs.colorLabel}) primary accents against dark #09090B studio tones and complementary cyan/amber highlights.`,
+        `• Visual Hierarchy: 1) Primary focal point on "${inputs.mainSubject}", 2) Secondary focal point on ${inputs.textOverlay ? `the bold text "${inputs.textOverlay}"` : "the glowing background story artifact"}, 3) Supporting environmental depth.`,
+        `• ${textDirective}`,
+        `• Artistic Style: ${inputs.style} execution — ${styleSpec.rendering}.${customNotes}`,
+        `• Technical Format: Strict 16:9 widescreen aspect ratio, target resolution 1280 × 720 pixels (YouTube HD standard).`,
+        `• Negative / Avoidance Guardrails: Avoid visual clutter, busy or muddy backgrounds, distorted objects, deformed hands or extra limbs, cropped heads, low-contrast washed-out lighting, watermarks, and unreadable or misspelled gibberish text.`
+      ].join("\n");
+    }
+
+    /***************************************************************************
+     * 6. THREE ALTERNATIVE CREATIVE CONCEPTS GENERATOR
+     ***************************************************************************/
+    function generateThreeAlternativeConcepts(inputs) {
+      const shortTopic = inputs.title.length > 42 ? inputs.title.slice(0, 42) + "..." : inputs.title;
+      const hookText = inputs.textOverlay || "WATCH THIS!";
+
+      return [
+        {
+          id: "concept-curiosity",
+          badge: "Concept A • Curiosity Gap",
+          title: "The Mystery / Story Gap Hook",
+          icon: "fa-solid fa-eye",
+          accentClass: "text-accentPurple border-accentPurple/40 bg-accentPurple/10",
+          summary: `Focuses on an unanswered visual question around "${shortTopic}" using a glowing silhouette or partially revealed secret element to compel clicks.`,
+          prompt: buildDetailedThumbnailPrompt({
+            ...inputs,
+            mainSubject: `${inputs.mainSubject} reacting to a mysterious glowing silhouette / locked artifact representing "${inputs.title}"`,
+            textOverlay: inputs.textOverlay || "SECRET REVEALED?",
+            additional: `${inputs.additional ? inputs.additional + ". " : ""}Emphasize an irresistible curiosity gap with a dramatic spotlight beam and high-contrast mystery element.`
+          }, 1)
+        },
+        {
+          id: "concept-split",
+          badge: "Concept B • Versus / Split",
+          title: "High-Contrast Before vs. After Split",
+          icon: "fa-solid fa-bolt",
+          accentClass: "text-accentBlue border-accentBlue/40 bg-accentBlue/10",
+          summary: `Divides the 16:9 frame into a high-stakes comparison: the old/broken way on the left vs. the ${inputs.primaryColor}-powered breakthrough on the right.`,
+          prompt: buildDetailedThumbnailPrompt({
+            ...inputs,
+            mainSubject: `Dynamic split-screen comparison for "${inputs.title}": left side shows struggling monochrome baseline state, right side shows supercharged ${inputs.primaryColor} breakthrough result with ${inputs.mainSubject}`,
+            textOverlay: inputs.textOverlay || "OLD VS NEW",
+            additional: `${inputs.additional ? inputs.additional + ". " : ""}Include a razor-sharp diagonal glowing lightning divider down the center of the 1280x720 frame.`
+          }, 2)
+        },
+        {
+          id: "concept-closeup",
+          badge: "Concept C • Extreme Macro Emotion",
+          title: "Hyper-Expressive Focal Close-Up",
+          icon: "fa-solid fa-fire",
+          accentClass: "text-emerald-400 border-emerald-500/40 bg-emerald-500/10",
+          summary: `Maximizes mobile screen real estate with an intense 85mm close-up of "${inputs.mainSubject}" and oversized 2-word typography.`,
+          prompt: buildDetailedThumbnailPrompt({
+            ...inputs,
+            mainSubject: `Tight 85mm macro close-up of ${inputs.mainSubject} filling 60% of the frame with intense eye-level presence and dramatic ${inputs.primaryColor} reflections`,
+            textOverlay: hookText,
+            additional: `${inputs.additional ? inputs.additional + ". " : ""}Ultra-shallow f/1.2 depth of field so the foreground subject pops out of the screen in 3D.`
+          }, 3)
+        }
+      ];
+    }
+
+    function renderAlternativeConcepts(concepts) {
+      dom.conceptsGrid.innerHTML = "";
+      concepts.forEach((concept, idx) => {
+        const card = document.createElement("div");
+        card.className = "bg-card hover:bg-cardHover border border-borderDark hover:border-accentPurple/50 rounded-xl p-4 flex flex-col justify-between transition-all group";
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2.5">
+              <span class="text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded-full border ${concept.accentClass}">
+                ${concept.badge}
+              </span>
+              <i class="${concept.icon} text-zinc-400 group-hover:text-white transition-colors"></i>
+            </div>
+            <h3 class="font-display font-bold text-sm text-white mb-1.5">${concept.title}</h3>
+            <p class="text-xs text-zinc-400 leading-relaxed mb-4">${concept.summary}</p>
+          </div>
+          <button
+            type="button"
+            data-concept-index="${idx}"
+            class="use-concept-btn w-full py-2 px-3 rounded-lg bg-obsidian hover:bg-accentPurple/20 border border-borderDark hover:border-accentPurple text-xs font-semibold text-zinc-200 hover:text-white transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+          >
+            <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
+            <span>Use This Concept Prompt</span>
+          </button>
+        `;
+        dom.conceptsGrid.appendChild(card);
+      });
+
+      // Attach listeners to each "Use This Concept Prompt" button
+      document.querySelectorAll(".use-concept-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const idx = parseInt(btn.getAttribute("data-concept-index"), 10);
+          const chosen = state.currentConcepts[idx];
+          if (chosen) {
+            dom.generatedPromptTextarea.value = chosen.prompt;
+            dom.variationCounterBadge.textContent = chosen.badge;
+            updateBlueprintPreview(getFormValues());
+            showToast(`Loaded "${chosen.title}" into main prompt!`);
+          }
+        });
+      });
+    }
+
+    /***************************************************************************
+     * 7. LIVE INTERACTIVE BLUEPRINT UPDATER
+     ***************************************************************************/
+    function updateBlueprintPreview(inputs) {
+      const envList = CATEGORY_ENVIRONMENTS[inputs.category] || CATEGORY_ENVIRONMENTS.Other;
+      const selectedEnv = envList[state.variationIndex % envList.length];
+
+      dom.blueprintGlowOrb.style.background = inputs.primaryColor;
+      dom.bpStyleTag.textContent = `STYLE: ${inputs.style.toUpperCase()}`;
+      dom.bpCategoryTag.textContent = `CAT: ${inputs.category.toUpperCase()}`;
+
+      if (inputs.textOverlay) {
+        dom.bpOverlayTextDisplay.textContent = inputs.textOverlay;
+        dom.bpOverlayTextDisplay.style.textShadow = `0 4px 20px ${inputs.primaryColor}`;
+        dom.bpOverlayTextBox.style.borderColor = inputs.primaryColor;
+      } else {
+        const fallbackWords = inputs.title
+          ? inputs.title.split(" ").slice(0, 3).join(" ").toUpperCase()
+          : "NO TEXT OVERLAY";
+        dom.bpOverlayTextDisplay.textContent = inputs.title ? `[CLEAN: ${fallbackWords}]` : "ENTER VIDEO TITLE";
+        dom.bpOverlayTextDisplay.style.textShadow = "none";
+        dom.bpOverlayTextBox.style.borderColor = "rgba(255,255,255,0.2)";
+      }
+
+      dom.bpBgDescription.textContent = `Env: ${selectedEnv.slice(0, 78)}...`;
+      dom.bpSubjectTitle.textContent = inputs.mainSubject;
+      dom.bpExpressionBadge.textContent = inputs.expression;
+      dom.bpColorSwatchDot.style.backgroundColor = inputs.primaryColor;
+      dom.bpColorCodeText.textContent = `${inputs.primaryColor} (${inputs.colorLabel})`;
+    }
+
+    /***************************************************************************
+     * 8. REAL AI THUMBNAIL GENERATION (GEMINI 3.1 FLASH IMAGE API WITH BACKOFF)
+     ***************************************************************************/
+    async function fetchWithRetry(url, options, maxRetries = 3) {
+      let delay = 1000;
+      for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+          const response = await fetch(url, options);
+          if (response.ok) {
+            return await response.json();
+          }
+          if (attempt === maxRetries) {
+            const errBody = await response.text();
+            throw new Error(`HTTP ${response.status}: ${errBody || response.statusText}`);
+          }
+        } catch (err) {
+          if (attempt === maxRetries) throw err;
+        }
+        await new Promise((r) => setTimeout(r, delay));
+        delay *= 2;
+      }
+    }
+
+    async function handleRealAiImageGeneration() {
+      const inputs = getFormValues();
+      if (!inputs.title) {
+        showValidationError(
+          "Video Title Required Before Rendering Image",
+          "Please enter a Video Title and generate or review your thumbnail prompt first."
+        );
+        return;
+      }
+      clearValidationError();
+      dom.imageApiFeedbackBox.classList.add("hidden");
+
+      // Ensure prompt is up to date
+      if (!dom.generatedPromptTextarea.value.trim()) {
+        runPromptGenerationFlow(false);
+      }
+
+      const activePrompt = dom.generatedPromptTextarea.value.trim();
+
+      // Show Loading Overlay
+      dom.previewLoadingOverlay.classList.remove("hidden");
+      dom.loadingOverlayTitle.textContent = "Rendering Real 16:9 AI Thumbnail...";
+      dom.loadingOverlaySubtitle.textContent = "Attempting PHP proxy (api.php?action=generate_image) then direct Gemini 3.1 Flash Image API...";
+      dom.generateRealImageBtn.disabled = true;
+      dom.generateRealImageBtn.classList.add("opacity-60", "cursor-wait");
+
+      const apiKey = ""; // Provided by runtime environment if supported
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image:generateContent?key=${apiKey}`;
+
+      const payload = {
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: activePrompt }]
+          }
+        ],
+        generationConfig: {
+          responseModalities: ["IMAGE"],
+          imageConfig: { aspectRatio: "16:9" }
+        }
+      };
+
+      try {
+        let imageUrl = null;
+        let renderedViaPhp = false;
+
+        // 1. Try PHP Backend Proxy first (`api.php?action=generate_image`) if PHP server is available
+        try {
+          const phpRes = await fetch(getPhpEndpointUrl("generate_image"), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt: activePrompt })
+          });
+          if (phpRes.ok) {
+            const phpJson = await phpRes.json();
+            if (phpJson && phpJson.status === "ok" && phpJson.image_url) {
+              imageUrl = phpJson.image_url;
+              renderedViaPhp = true;
+            }
+          }
+        } catch (_) {
+          // Gracefully continue to direct Canvas runtime Gemini API
+        }
+
+        // 2. If PHP proxy wasn't active, call the Gemini 3.1 Flash Image endpoint directly
+        if (!imageUrl) {
+          const result = await fetchWithRetry(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          const part = result?.candidates?.[0]?.content?.parts?.find((p) => p.inlineData);
+          if (!part || !part.inlineData?.data) {
+            throw new Error("No inline image data returned from the image generation endpoint.");
+          }
+
+          const mimeType = part.inlineData.mimeType || "image/png";
+          imageUrl = `data:${mimeType};base64,${part.inlineData.data}`;
+        }
+
+        // Display the genuine AI-generated image
+        state.hasRealAiImage = true;
+        state.realAiImageDataUrl = imageUrl;
+        dom.generatedThumbnailImg.src = imageUrl;
+
+        dom.blueprintCanvasView.classList.add("hidden");
+        dom.realAiImageView.classList.remove("hidden");
+        dom.switchToBlueprintBtn.classList.remove("hidden");
+
+        dom.previewModeBadge.textContent = renderedViaPhp ? "Real AI Image (PHP Proxy)" : "Real AI Image (16:9)";
+        dom.previewModeBadge.className = "text-[11px] font-mono uppercase px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30";
+        dom.honestyStatusText.innerHTML = `<strong>Real AI Thumbnail Rendered:</strong> Generated live via ${renderedViaPhp ? "<code>api.php?action=generate_image</code>" : "Gemini 3.1 Flash Image API"}. Click <em>"Download PNG (1280×720)"</em> to save.`;
+
+        // Enable the 1280x720 PNG Download Button
+        dom.downloadImageBtn.disabled = false;
+        dom.downloadImageBtn.className = "px-3.5 py-2.5 rounded-xl text-xs font-semibold border border-emerald-500/50 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-200 cursor-pointer transition-all flex items-center gap-1.5 shadow";
+        dom.downloadImageBtn.title = "Download real AI-generated thumbnail at exact 1280×720 resolution";
+
+        showToast("Real 16:9 AI Thumbnail Generated!", "fa-solid fa-wand-magic-sparkles");
+      } catch (error) {
+        // Strictly honest fallback: never fake an image if API is unreachable or unauthorized
+        dom.imageApiFeedbackBox.classList.remove("hidden");
+        dom.imageApiFeedbackText.innerHTML = `
+          <strong>Live Image API Notice:</strong> Could not complete live image synthesis in this session (${error.message}). 
+          <strong>No fake placeholder image was shown.</strong> Your engineered 16:9 prompt below is 100% complete and ready to copy, or configure <code class="text-white">GEMINI_API_KEY</code> inside <code class="text-white">config.php</code> on your PHP server.
+        `;
+      } finally {
+        dom.previewLoadingOverlay.classList.add("hidden");
+        dom.generateRealImageBtn.disabled = false;
+        dom.generateRealImageBtn.classList.remove("opacity-60", "cursor-wait");
+      }
+    }
+
+    /***************************************************************************
+     * 9. DOWNLOAD REAL 1280×720 PNG & EXPORT .TXT PROMPT
+     ***************************************************************************/
+    function downloadRealThumbnailPng() {
+      if (!state.hasRealAiImage || !state.realAiImageDataUrl) {
+        showToast("Generate a real AI image first to download PNG.", "fa-solid fa-circle-info");
+        return;
+      }
+
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => {
+        const ctx = dom.exportCanvas.getContext("2d");
+        ctx.clearRect(0, 0, 1280, 720);
+        ctx.drawImage(img, 0, 0, 1280, 720);
+        const pngUrl = dom.exportCanvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        const cleanSlug = (dom.videoTitle.value.trim() || "thumbnail")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .slice(0, 35);
+        link.download = `${cleanSlug}-1280x720.png`;
+        link.href = pngUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast("Downloaded 1280×720 PNG!", "fa-solid fa-download");
+      };
+      img.src = state.realAiImageDataUrl;
+    }
+
+    function downloadPromptAsTxt() {
+      const promptText = dom.generatedPromptTextarea.value.trim();
+      if (!promptText) {
+        showToast("Generate a prompt first before exporting.", "fa-solid fa-circle-exclamation");
+        return;
+      }
+
+      const conceptsText = state.currentConcepts
+        .map((c, idx) => `\n--- ALTERNATIVE CONCEPT ${idx + 1}: ${c.title} ---\n${c.prompt}`)
+        .join("\n");
+
+      const fullExport = `${promptText}\n\n==================================================\nALTERNATIVE CREATIVE CONCEPTS\n==================================================${conceptsText}\n`;
+      const blob = new Blob([fullExport], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const cleanSlug = (dom.videoTitle.value.trim() || "thumbnail-prompt")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .slice(0, 35);
+      link.download = `${cleanSlug}-prompt.txt`;
+      link.href = url;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast("Exported Prompt & Concepts (.txt)!");
+    }
+
+    /***************************************************************************
+     * 10. COMPLETE USER FLOW HANDLERS (GENERATE, REGENERATE, COPY, EDIT, CLEAR)
+     ***************************************************************************/
+    async function runPromptGenerationFlow(incrementVariation = false) {
+      const inputs = getFormValues();
+
+      if (!inputs.title) {
+        showValidationError(
+          "Video Title is Required",
+          "Please enter a Video Title in field #1 so Thumbnail Studio AI can tailor the visual composition, lighting, and subject matter to your video."
+        );
+        return;
+      }
+
+      clearValidationError();
+
+      if (incrementVariation) {
+        state.variationIndex = (state.variationIndex + 1) % VARIATION_ANGLES.length;
+      }
+
+      // Brief visual feedback on button
+      dom.generateBtnIcon.className = "fa-solid fa-spinner fa-spin";
+      dom.generateBtnText.textContent = "Architecting Prompt...";
+
+      let promptOutput = null;
+      let usedPhpEngine = false;
+
+      // 1. Try PHP Backend (`api.php?action=generate_prompt`) first when not cycling local angle seeds
+      if (!incrementVariation) {
+        try {
+          const res = await fetch(getPhpEndpointUrl("generate_prompt"), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(inputs)
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.status === "ok" && data.prompt) {
+              promptOutput = data.prompt;
+              usedPhpEngine = true;
+            }
+          }
+        } catch (_) {
+          // Graceful fallback to local deterministic prompt architect
+        }
+      }
+
+      // 2. Fallback to Local Deterministic Engine
+      if (!promptOutput) {
+        promptOutput = buildDetailedThumbnailPrompt(inputs, state.variationIndex);
+      }
+
+      dom.generatedPromptTextarea.value = promptOutput;
+
+      const angleInfo = VARIATION_ANGLES[state.variationIndex % VARIATION_ANGLES.length];
+      dom.variationCounterBadge.textContent = usedPhpEngine
+        ? `PHP Engine (api.php) • ${angleInfo.name}`
+        : angleInfo.name;
+
+      // Build & Render 3 Alternative Creative Concepts
+      state.currentConcepts = generateThreeAlternativeConcepts(inputs);
+      renderAlternativeConcepts(state.currentConcepts);
+
+      // Update Blueprint Wireframe
+      updateBlueprintPreview(inputs);
+
+      dom.generateBtnIcon.className = "fa-solid fa-wand-magic-sparkles";
+      dom.generateBtnText.textContent = "Generate Thumbnail Prompt";
+
+      showToast(
+        usedPhpEngine
+          ? "Prompt Generated via PHP Backend (`api.php`)!"
+          : incrementVariation
+          ? `Regenerated with ${angleInfo.name}!`
+          : "Thumbnail Prompt & 3 Concepts Generated!"
+      );
+    }
+
+    function copyPromptToClipboard() {
+      const text = dom.generatedPromptTextarea.value.trim();
+      if (!text) {
+        showToast("No prompt to copy yet! Generate a prompt first.", "fa-solid fa-circle-exclamation");
+        return;
+      }
+
+      // Compatible clipboard copy for iframe & modern browsers
+      const tempArea = document.createElement("textarea");
+      tempArea.value = text;
+      tempArea.style.position = "fixed";
+      tempArea.style.left = "-9999px";
+      document.body.appendChild(tempArea);
+      tempArea.focus();
+      tempArea.select();
+
+      try {
+        document.execCommand("copy");
+        dom.copyBtnIcon.className = "fa-solid fa-check";
+        dom.copyBtnText.textContent = "Copied to Clipboard!";
+        showToast("Prompt copied to clipboard!");
+        setTimeout(() => {
+          dom.copyBtnIcon.className = "fa-regular fa-copy";
+          dom.copyBtnText.textContent = "Copy Prompt";
+        }, 2000);
+      } catch (err) {
+        showToast("Press Ctrl+C / Cmd+C inside the prompt box to copy.", "fa-solid fa-circle-info");
+      } finally {
+        document.body.removeChild(tempArea);
+      }
+    }
+
+    function loadSamplePreset(presetKey) {
+      const sample = SAMPLE_PRESETS[presetKey];
+      if (!sample) return;
+
+      clearValidationError();
+      dom.videoTitle.value = sample.videoTitle;
+      dom.videoDescription.value = sample.videoDescription;
+      dom.categorySelect.value = sample.category;
+      dom.expressionSelect.value = sample.expression;
+      dom.thumbnailText.value = sample.thumbnailText;
+      dom.mainSubject.value = sample.mainSubject;
+      dom.additionalInstructions.value = sample.additionalInstructions;
+
+      // Update Style Pill
+      selectStylePill(sample.style);
+
+      // Update Primary Color
+      setActivePrimaryColor(sample.primaryColor, sample.colorLabel);
+
+      // Update Overlay Word Count Badge
+      updateTextOverlayBadge();
+
+      // Switch back to blueprint if an image was up
+      showBlueprintMode();
+
+      state.variationIndex = 0;
+      runPromptGenerationFlow(false);
+    }
+
+    function selectStylePill(styleName) {
+      dom.thumbnailStyleInput.value = styleName;
+      dom.stylePills.forEach((pill) => {
+        const isMatch = pill.getAttribute("data-style") === styleName;
+        pill.setAttribute("aria-checked", isMatch ? "true" : "false");
+        const icon = pill.querySelector("i");
+        if (isMatch) {
+          pill.className = "style-pill active-pill px-3 py-2 rounded-xl border text-xs font-semibold flex items-center gap-2 transition-all bg-accentPurple/20 border-accentPurple text-white shadow-glowSm";
+          if (icon) icon.className = icon.className.replace("text-zinc-400", "text-accentPurple");
+        } else {
+          pill.className = "style-pill px-3 py-2 rounded-xl border border-borderDark bg-card hover:bg-cardHover text-zinc-300 text-xs font-semibold flex items-center gap-2 transition-all";
+          if (icon) icon.className = icon.className.replace("text-accentPurple", "text-zinc-400");
+        }
+      });
+    }
+
+    function setActivePrimaryColor(hexCode, labelText = "Custom Accent") {
+      state.activeColorHex = hexCode.toUpperCase();
+      state.activeColorLabel = labelText;
+      dom.primaryColorPicker.value = hexCode;
+      dom.colorNameLabel.textContent = `${state.activeColorHex} (${labelText})`;
+      dom.colorNameLabel.style.color = hexCode;
+
+      dom.colorSwatches.forEach((sw) => {
+        const swHex = sw.getAttribute("data-color").toUpperCase();
+        if (swHex === state.activeColorHex) {
+          sw.classList.add("ring-2", "ring-white", "scale-110");
+          sw.classList.remove("opacity-80");
+        } else {
+          sw.classList.remove("ring-2", "ring-white", "scale-110");
+          sw.classList.add("opacity-80");
+        }
+      });
+    }
+
+    function updateTextOverlayBadge() {
+      const raw = dom.thumbnailText.value.trim();
+      const words = raw ? raw.split(/\s+/).length : 0;
+      if (words === 0) {
+        dom.textLengthBadge.textContent = "0 words (Optional)";
+        dom.textLengthBadge.className = "text-[11px] px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-400 font-mono";
+      } else if (words <= 4) {
+        dom.textLengthBadge.textContent = `${words} word${words > 1 ? "s" : ""} (Optimal High-CTR)`;
+        dom.textLengthBadge.className = "text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-mono";
+      } else {
+        dom.textLengthBadge.textContent = `${words} words (Tip: Keep ≤ 4 words)`;
+        dom.textLengthBadge.className = "text-[11px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 font-mono";
+      }
+    }
+
+    function showBlueprintMode() {
+      dom.realAiImageView.classList.add("hidden");
+      dom.blueprintCanvasView.classList.remove("hidden");
+      dom.switchToBlueprintBtn.classList.add("hidden");
+      dom.previewModeBadge.textContent = "Composition Blueprint";
+      dom.previewModeBadge.className = "text-[11px] font-mono uppercase px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30";
+      dom.honestyStatusText.innerHTML = `<strong>Interactive Layout Blueprint:</strong> Shows real-time 1280×720 visual hierarchy & safe zones. Click <em>"Render Real AI Image"</em> below to invoke the live Gemini Image model.`;
+    }
+
+    function clearFormAndReset() {
+      dom.form.reset();
+      clearValidationError();
+      dom.imageApiFeedbackBox.classList.add("hidden");
+      selectStylePill("Cinematic");
+      setActivePrimaryColor("#8B5CF6", "Electric Violet");
+      updateTextOverlayBadge();
+
+      state.variationIndex = 0;
+      state.hasRealAiImage = false;
+      state.realAiImageDataUrl = null;
+      dom.generatedThumbnailImg.removeAttribute("src");
+
+      // Disable image download button honestly
+      dom.downloadImageBtn.disabled = true;
+      dom.downloadImageBtn.className = "px-3.5 py-2.5 rounded-xl text-xs font-semibold border border-borderDark bg-card text-zinc-500 cursor-not-allowed transition-all flex items-center gap-1.5";
+
+      showBlueprintMode();
+      dom.generatedPromptTextarea.value = "";
+      dom.conceptsGrid.innerHTML = `
+        <div class="col-span-full text-center py-6 text-xs text-zinc-500 border border-dashed border-borderDark rounded-xl">
+          Enter a Video Title and click <strong>"Generate Thumbnail Prompt"</strong> to unlock 3 specialized high-CTR thumbnail concepts.
+        </div>
+      `;
+      updateBlueprintPreview(getFormValues());
+      dom.videoTitle.focus();
+      showToast("Form and studio workspace cleared!", "fa-solid fa-rotate-left");
+    }
+
+    /***************************************************************************
+     * 11. EVENT LISTENERS & INITIALIZATION
+     ***************************************************************************/
+    function initEventListeners() {
+      // Form submit -> Generate Prompt
+      dom.form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        runPromptGenerationFlow(false);
+      });
+
+      // Live input listeners for instant Blueprint feedback
+      [
+        dom.videoTitle,
+        dom.videoDescription,
+        dom.categorySelect,
+        dom.expressionSelect,
+        dom.thumbnailText,
+        dom.mainSubject,
+        dom.additionalInstructions
+      ].forEach((el) => {
+        el.addEventListener("input", () => {
+          if (el === dom.videoTitle && dom.videoTitle.value.trim()) {
+            clearValidationError();
+          }
+          if (el === dom.thumbnailText) {
+            updateTextOverlayBadge();
+          }
+          updateBlueprintPreview(getFormValues());
+        });
+      });
+
+      // Style Pills
+      dom.stylePills.forEach((pill) => {
+        pill.addEventListener("click", () => {
+          selectStylePill(pill.getAttribute("data-style"));
+          updateBlueprintPreview(getFormValues());
+        });
+      });
+
+      // Color Swatches & Picker
+      dom.colorSwatches.forEach((sw) => {
+        sw.addEventListener("click", () => {
+          setActivePrimaryColor(sw.getAttribute("data-color"), sw.getAttribute("data-label"));
+          updateBlueprintPreview(getFormValues());
+        });
+      });
+
+      dom.primaryColorPicker.addEventListener("input", (e) => {
+        setActivePrimaryColor(e.target.value, "Custom Hex");
+        updateBlueprintPreview(getFormValues());
+      });
+
+      // Sample Preset Buttons
+      document.querySelectorAll(".sample-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          loadSamplePreset(btn.getAttribute("data-sample"));
+        });
+      });
+
+      // Copy Prompt Button
+      dom.copyPromptBtn.addEventListener("click", copyPromptToClipboard);
+
+      // Regenerate Prompt Button
+      dom.regeneratePromptBtn.addEventListener("click", () => {
+        runPromptGenerationFlow(true);
+      });
+
+      // Edit Inputs Button
+      dom.editInputsBtn.addEventListener("click", () => {
+        dom.inputFormSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        dom.inputFormSection.classList.remove("highlight-pulse");
+        void dom.inputFormSection.offsetWidth; // trigger reflow
+        dom.inputFormSection.classList.add("highlight-pulse");
+        setTimeout(() => dom.videoTitle.focus(), 350);
+      });
+
+      // Clear Form Button
+      dom.clearFormBtn.addEventListener("click", clearFormAndReset);
+
+      // Toggle Rule-of-Thirds & Safe Zone Grid
+      dom.toggleGridBtn.addEventListener("click", () => {
+        state.showSafeZones = !state.showSafeZones;
+        if (state.showSafeZones) {
+          dom.previewStageContainer.classList.add("thirds-grid");
+          dom.ytTimestampSafeZone.classList.remove("opacity-0");
+          dom.toggleGridBtn.querySelector("span").textContent = "Safe Zones: ON";
+        } else {
+          dom.previewStageContainer.classList.remove("thirds-grid");
+          dom.ytTimestampSafeZone.classList.add("opacity-0");
+          dom.toggleGridBtn.querySelector("span").textContent = "Safe Zones: OFF";
+        }
+      });
+
+      // Switch back to Blueprint View
+      dom.switchToBlueprintBtn.addEventListener("click", showBlueprintMode);
+
+      // Real AI Image Generation Button
+      dom.generateRealImageBtn.addEventListener("click", handleRealAiImageGeneration);
+
+      // Download Real PNG & Export .TXT
+      dom.downloadImageBtn.addEventListener("click", downloadRealThumbnailPng);
+      dom.downloadPromptTxtBtn.addEventListener("click", downloadPromptAsTxt);
+
+      // Save Project to DB (PHP/MySQL + Local Fallback) & Refresh History
+      dom.saveProjectDbBtn.addEventListener("click", saveCurrentProjectToBackend);
+      dom.refreshHistoryBtn.addEventListener("click", () => {
+        loadSavedProjectsHistory();
+        showToast("Refreshed saved projects list!");
+      });
+
+      // PHP Endpoint Ping Button
+      dom.pingPhpBtn.addEventListener("click", () => {
+        pingPhpBackend(true);
+      });
+
+      // PHP Backend Suite Modal Controls
+      dom.openPhpModalBtn.addEventListener("click", () => {
+        selectPhpModalTab(state.activePhpTab);
+        dom.phpBackendModal.classList.remove("hidden");
+      });
+      dom.closePhpModalBtn.addEventListener("click", () => {
+        dom.phpBackendModal.classList.add("hidden");
+      });
+      dom.phpBackendModal.addEventListener("click", (e) => {
+        if (e.target === dom.phpBackendModal) {
+          dom.phpBackendModal.classList.add("hidden");
+        }
+      });
+
+      dom.phpTabBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          selectPhpModalTab(btn.getAttribute("data-php-tab"));
+        });
+      });
+
+      dom.copyPhpFileBtn.addEventListener("click", () => {
+        const code = PHP_BACKEND_FILES[state.activePhpTab] || "";
+        const temp = document.createElement("textarea");
+        temp.value = code;
+        temp.style.position = "fixed";
+        temp.style.left = "-9999px";
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand("copy");
+        document.body.removeChild(temp);
+        showToast(`Copied ${state.activePhpTab} to clipboard!`, "fa-brands fa-php");
+      });
+
+      dom.downloadPhpFileBtn.addEventListener("click", () => {
+        const fileName = state.activePhpTab;
+        const code = PHP_BACKEND_FILES[fileName] || "";
+        const blob = new Blob([code], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(`Downloaded ${fileName}!`, "fa-solid fa-download");
+      });
+
+      // Dismiss Banners
+      dom.closeValidationBtn.addEventListener("click", clearValidationError);
+      dom.closeApiFeedbackBtn.addEventListener("click", () => {
+        dom.imageApiFeedbackBox.classList.add("hidden");
+      });
+    }
+
+    // Boot application with AI Coding Sample, check PHP backend health, and load saved history
+    window.addEventListener("DOMContentLoaded", () => {
+      initEventListeners();
+      selectPhpModalTab("api.php");
+      loadSamplePreset("ai");
+      pingPhpBackend(false);
+      loadSavedProjectsHistory();
+    });
+  </script>
+</body>
+</html>
